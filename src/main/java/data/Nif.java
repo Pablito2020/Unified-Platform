@@ -2,22 +2,19 @@ package data;
 
 import exceptions.BadFormatNifException;
 
-/**
- * Essential data classes
- */
-final public class Nif {
+/** Essential data classes */
+public final class Nif {
 
-    private static final String NIF_REGEX = "^[0-9]{8,8}[A-Za-z]$";
+    private static final String NIF_REGEX = "^[0-9]{8}[A-Za-z]$";
 
     // The tax identification number in the Spanish state.
 
     private final String nif;
 
     public Nif(String code) throws BadFormatNifException {
-        if (code == null)
-            throw new NullPointerException("NIF code is null.");
+        if (code == null) throw new NullPointerException("NIF code is null.");
         if (!code.matches(NIF_REGEX))
-            throw new BadFormatNifException();
+            throw new BadFormatNifException("Nif should be 8 numbers and 1 letter");
         this.nif = code;
     }
 
@@ -42,5 +39,4 @@ final public class Nif {
     public String toString() {
         return "Nif{" + "nif ciudadano='" + nif + '\'' + '}';
     }
-
 }

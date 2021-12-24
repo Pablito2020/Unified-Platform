@@ -5,9 +5,12 @@ public final class DocPath {
     private final String path;
 
     public DocPath(String path) {
-        if (path == null)
-            throw new NullPointerException("Document Path shouldn't be null");
+        if (path == null) throw new NullPointerException("Document Path shouldn't be null");
         this.path = path;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     @Override

@@ -10,6 +10,10 @@ public final class Password {
         this.password = password;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -20,9 +24,7 @@ public final class Password {
 
     @Override
     public String toString() {
-        return "Password{" +
-                "password='" + password + '\'' +
-                '}';
+        return "Password{" + "password='" + password + '\'' + '}';
     }
 
     @Override

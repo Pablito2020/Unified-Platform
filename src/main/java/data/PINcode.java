@@ -2,18 +2,20 @@ package data;
 
 import exceptions.BadFormatPinException;
 
-final public class PINcode {
+public final class PINcode {
 
-    private final static String PIN_REGEX = "^[0-9]+$";
-
+    private static final String PIN_REGEX = "^[0-9]+$";
     private final String pin;
 
     public PINcode(String pin) throws BadFormatPinException {
-        if (pin == null)
-            throw new NullPointerException("PIN shouldn't reference to null.");
+        if (pin == null) throw new NullPointerException("PIN shouldn't reference to null.");
         if (!pin.matches(PIN_REGEX))
-            throw new BadFormatPinException();
+            throw new BadFormatPinException("Pin should be in numeric format");
         this.pin = pin;
+    }
+
+    public String getPin() {
+        return pin;
     }
 
     @Override
@@ -33,5 +35,4 @@ final public class PINcode {
     public String toString() {
         return pin;
     }
-
 }
