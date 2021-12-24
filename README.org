@@ -1,0 +1,11 @@
+#+TITLE: Unified Platform
+#+AUTHOR: Pablo Fraile Alonso, Roger Fontova Torres and Oscar Salcedo Heredia
+
+* TODO (questions):
+** Exceptions:
+- [ ] Nif: BadFormatNifException is checked (because the user can send a bad parametter and the application could catch the exception).
+- [ ] Nif: If string is null, should we send our own exception? Or we can use the NullPointerException from java? + It makes sense that te exception is unchecked, because it is a programmer fault, not the user.
+- [ ] PIN: Is pin only a number?
+
+* TODO (work):
+- [ ]
