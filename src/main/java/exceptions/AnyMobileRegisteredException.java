@@ -1,4 +1,3 @@
 package exceptions;
 
-public class AnyMobileRegisteredException extends Exception {
-}
+public class AnyMobileRegisteredException extends Exception {}

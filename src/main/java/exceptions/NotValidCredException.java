@@ -1,4 +1,3 @@
 package exceptions;
 
-public class NotValidCredException extends Exception {
-}
+public class NotValidCredException extends Exception {}

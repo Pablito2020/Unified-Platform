@@ -1,4 +1,3 @@
 package exceptions;
 
-public class NotValidPINException extends Exception {
-}
+public class NotValidPINException extends Exception {}

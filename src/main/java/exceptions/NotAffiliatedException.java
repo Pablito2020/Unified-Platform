@@ -1,4 +1,3 @@
 package exceptions;
 
-public class NotAffiliatedException extends Exception {
-}
+public class NotAffiliatedException extends Exception {}
