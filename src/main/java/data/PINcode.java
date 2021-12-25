@@ -5,12 +5,15 @@ import exceptions.BadFormatPinException;
 public final class PINcode {
 
     private static final String PIN_REGEX = "^[0-9]+$";
+    private static final int PIN_LENGTH = 3;
     private final String pin;
 
     public PINcode(String pin) throws BadFormatPinException {
         if (pin == null) throw new NullPointerException("PIN shouldn't reference to null.");
         if (!pin.matches(PIN_REGEX))
             throw new BadFormatPinException("Pin should be in numeric format");
+        if (pin.length() != PIN_LENGTH)
+            throw new BadFormatPinException("Pin should be " + PIN_LENGTH + " digits");
         this.pin = pin;
     }
 

@@ -20,7 +20,7 @@ public class PINcodeTest {
     }
 
     @Test
-    public void badPinFormat() {
+    public void notNumberPin() {
         Throwable ex =
                 assertThrows(
                         BadFormatPinException.class,
@@ -31,8 +31,19 @@ public class PINcodeTest {
     }
 
     @Test
+    public void notLength3Pin() {
+        Throwable ex =
+                assertThrows(
+                        BadFormatPinException.class,
+                        () -> {
+                            new PINcode("2839");
+                        });
+        assertEquals("Pin should be 3 digits", ex.getMessage());
+    }
+
+    @Test
     public void correctPin() throws BadFormatPinException {
-        PINcode pin = new PINcode("12345");
-        assertEquals("12345", pin.getPin());
+        PINcode pin = new PINcode("234");
+        assertEquals("234", pin.getPin());
     }
 }
