@@ -1,25 +1,26 @@
 package publicadministration;
 
+import java.util.*;
+
 public class QuotePeriodsCollection {
 
-    // TODO: Attributes + methods.
-    // This class represents all the periods of quote of a citizen. The periods
-    // should be sorted by date (from older to newer).
-    // HINT: Maybe use a Min-Heap for sorting from older to newer?
+    private final Collection<QuotePeriod> quotes;
+    private final Comparator<QuotePeriod> comparator = Comparator.comparing(QuotePeriod::getInitDay);
 
     public QuotePeriodsCollection() {
-        throw new RuntimeException("TODO");
+        this.quotes = new TreeSet<>(comparator);
     }
 
-    // TODO: Is this method really void?
-    public void addQuotePeriod(QuotePeriod qPd) {
-        throw new RuntimeException("TODO");
+    public boolean addQuotePeriod(QuotePeriod quote) {
+        return quotes.add(quote);
     }
 
-    // TODO: Make getters
+    public Collection<QuotePeriod> getQuotes() {
+        return quotes;
+    }
 
     @Override
     public String toString() {
-        throw new RuntimeException("TODO");
+        return Arrays.toString(quotes.toArray());
     }
 }
