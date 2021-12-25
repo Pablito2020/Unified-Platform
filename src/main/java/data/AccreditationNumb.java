@@ -2,7 +2,7 @@ package data;
 
 import exceptions.BadFormatAccreditationNumberException;
 
-public class AccreditationNumb {
+public final class AccreditationNumb {
 
     private static final String NUMBER_REGEX = "^[0-9]+$";
 
