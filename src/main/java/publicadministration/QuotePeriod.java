@@ -8,8 +8,7 @@ public class QuotePeriod {
     private final int numDays;
 
     public QuotePeriod(Date date, int numberDays) {
-        if (date == null)
-            throw new NullPointerException("Date can't reference to null");
+        if (date == null) throw new NullPointerException("Date can't reference to null");
         if (numberDays <= 0)
             throw new NumberFormatException("Days should be bigger or equal than 1");
         this.initDay = date;

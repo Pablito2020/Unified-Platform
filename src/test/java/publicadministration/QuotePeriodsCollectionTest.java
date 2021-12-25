@@ -31,5 +31,4 @@ public class QuotePeriodsCollectionTest {
         assertTrue(collection.addQuotePeriod(quote));
         assertFalse(collection.addQuotePeriod(quote));
     }
-
 }
