@@ -2,8 +2,7 @@ package data;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PasswordTest {
 
@@ -22,5 +21,25 @@ public class PasswordTest {
     public void correctDocument() {
         Password password = new Password("fakePassword");
         assertEquals("fakePassword", password.getPassword());
+    }
+
+    @Test
+    public void equalsDiffTest(){
+        Password password1 = new Password("fakePassword");
+        Password password2 = new Password("fakePassword");
+        assertTrue(password1.equals(password2));
+    }
+
+    @Test
+    public void equalsSameTest(){
+        Password password1 = new Password("fakePassword");
+        assertTrue(password1.equals(password1));
+    }
+
+    @Test
+    public void notEqualsTest(){
+        Password password1 = new Password("fakePassword");
+        Password password2 = new Password("realPassword");
+        assertFalse(password1.equals(password2));
     }
 }
