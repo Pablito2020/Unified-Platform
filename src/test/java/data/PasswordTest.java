@@ -1,5 +1,6 @@
 package data;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +25,7 @@ public class PasswordTest {
     }
 
     @Test
+    @DisplayName("Equals on different reference with same values")
     public void equalsDiffTest() {
         Password password1 = new Password("fakePassword");
         Password password2 = new Password("fakePassword");
@@ -31,12 +33,14 @@ public class PasswordTest {
     }
 
     @Test
+    @DisplayName("Equals on same reference")
     public void equalsSameTest() {
         Password password1 = new Password("fakePassword");
         assertTrue(password1.equals(password1));
     }
 
     @Test
+    @DisplayName("Equals on different reference with different values")
     public void notEqualsTest() {
         Password password1 = new Password("fakePassword");
         Password password2 = new Password("realPassword");

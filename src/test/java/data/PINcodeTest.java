@@ -1,6 +1,7 @@
 package data;
 
 import exceptions.BadFormatPinException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,12 +42,14 @@ public class PINcodeTest {
     }
 
     @Test
+    @DisplayName("Equals on different reference with same values")
     public void correctPin() throws BadFormatPinException {
         PINcode pin = new PINcode("234");
         assertEquals("234", pin.getPin());
     }
 
     @Test
+    @DisplayName("Equals on same reference")
     public void equalsSameTest() throws BadFormatPinException {
         PINcode pin1 = new PINcode("123");
         PINcode pin2 = new PINcode("123");
@@ -54,6 +57,7 @@ public class PINcodeTest {
     }
 
     @Test
+    @DisplayName("Equals on different reference with different values")
     public void equalsDiffTest() throws BadFormatPinException {
         PINcode pin1 = new PINcode("123");
         assertTrue(pin1.equals(pin1));

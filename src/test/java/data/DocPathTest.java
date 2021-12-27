@@ -1,5 +1,6 @@
 package data;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +25,7 @@ public class DocPathTest {
     }
 
     @Test
+    @DisplayName("Equals on different reference with same values")
     public void equalsDiffObjectTest() {
         DocPath path1 = new DocPath("./path/to/file.pdf");
         DocPath path2 = new DocPath("./path/to/file.pdf");
@@ -31,12 +33,14 @@ public class DocPathTest {
     }
 
     @Test
+    @DisplayName("Equals on same reference")
     public void equalsSameObjectTest() {
         DocPath path1 = new DocPath("./path/to/file.pdf");
         assertTrue(path1.equals(path1));
     }
 
     @Test
+    @DisplayName("Equals on different reference with different values")
     public void notEqualsTest() {
         DocPath path1 = new DocPath("./path/to/file.pdf");
         DocPath path2 = new DocPath("./path/to/file/document.pdf");
