@@ -37,23 +37,22 @@ public class AccreditationNumbTest {
     }
 
     @Test
-    public void equalsDiffObjectTest() throws BadFormatAccreditationNumberException{
+    public void equalsDiffObjectTest() throws BadFormatAccreditationNumberException {
         AccreditationNumb accNumb1 = new AccreditationNumb("123412341234");
         AccreditationNumb accNumb2 = new AccreditationNumb("123412341234");
         assertTrue(accNumb1.equals(accNumb2));
     }
 
     @Test
-    public void equalsSameObjectTest() throws BadFormatAccreditationNumberException{
+    public void equalsSameObjectTest() throws BadFormatAccreditationNumberException {
         AccreditationNumb accNumb1 = new AccreditationNumb("123412341234");
         assertTrue(accNumb1.equals(accNumb1));
     }
 
     @Test
-    public void notEqualsTest() throws BadFormatAccreditationNumberException{
+    public void notEqualsTest() throws BadFormatAccreditationNumberException {
         AccreditationNumb accNumb1 = new AccreditationNumb("123413241234");
         AccreditationNumb accNumb2 = new AccreditationNumb("432143214321");
         assertFalse(accNumb1.equals(accNumb2));
     }
-
 }

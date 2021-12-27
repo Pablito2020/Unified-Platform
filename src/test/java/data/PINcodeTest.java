@@ -47,20 +47,20 @@ public class PINcodeTest {
     }
 
     @Test
-    public void equalsSameTest() throws BadFormatPinException{
+    public void equalsSameTest() throws BadFormatPinException {
         PINcode pin1 = new PINcode("123");
         PINcode pin2 = new PINcode("123");
         assertTrue(pin1.equals(pin2));
     }
 
     @Test
-    public void equalsDiffTest() throws BadFormatPinException{
+    public void equalsDiffTest() throws BadFormatPinException {
         PINcode pin1 = new PINcode("123");
         assertTrue(pin1.equals(pin1));
     }
 
     @Test
-    public void notEqualsTest() throws BadFormatPinException{
+    public void notEqualsTest() throws BadFormatPinException {
         PINcode pin1 = new PINcode("123");
         PINcode pin2 = new PINcode("321");
         assertFalse(pin1.equals(pin2));

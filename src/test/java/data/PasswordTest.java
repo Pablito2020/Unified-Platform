@@ -24,20 +24,20 @@ public class PasswordTest {
     }
 
     @Test
-    public void equalsDiffTest(){
+    public void equalsDiffTest() {
         Password password1 = new Password("fakePassword");
         Password password2 = new Password("fakePassword");
         assertTrue(password1.equals(password2));
     }
 
     @Test
-    public void equalsSameTest(){
+    public void equalsSameTest() {
         Password password1 = new Password("fakePassword");
         assertTrue(password1.equals(password1));
     }
 
     @Test
-    public void notEqualsTest(){
+    public void notEqualsTest() {
         Password password1 = new Password("fakePassword");
         Password password2 = new Password("realPassword");
         assertFalse(password1.equals(password2));

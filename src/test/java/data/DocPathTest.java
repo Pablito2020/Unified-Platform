@@ -24,23 +24,22 @@ public class DocPathTest {
     }
 
     @Test
-    public void equalsDiffObjectTest(){
+    public void equalsDiffObjectTest() {
         DocPath path1 = new DocPath("./path/to/file.pdf");
         DocPath path2 = new DocPath("./path/to/file.pdf");
         assertTrue(path1.equals(path2));
     }
 
     @Test
-    public void equalsSameObjectTest(){
+    public void equalsSameObjectTest() {
         DocPath path1 = new DocPath("./path/to/file.pdf");
         assertTrue(path1.equals(path1));
     }
 
     @Test
-    public void notEqualsTest(){
+    public void notEqualsTest() {
         DocPath path1 = new DocPath("./path/to/file.pdf");
         DocPath path2 = new DocPath("./path/to/file/document.pdf");
         assertFalse(path1.equals(path2));
     }
-
 }
