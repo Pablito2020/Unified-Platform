@@ -2,7 +2,6 @@ package publicadministration;
 
 import data.DocPath;
 
-import javax.print.Doc;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
