@@ -6,10 +6,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileTime;
 import java.util.Date;
 
 public class PDFDocument {
@@ -18,13 +14,13 @@ public class PDFDocument {
     private final File file;
 
     public PDFDocument(DocPath path) throws IOException {
-        if (path == null || path.getPath() == null ) throw new NullPointerException("Path can't be NULL");
+        if (path == null || path.getPath() == null)
+            throw new NullPointerException("Path can't be NULL");
         this.path = path;
         this.file = new File(path.getPath());
         if (!file.exists())
             throw new FileNotFoundException("Path is incorrect, no file on this path");
         this.creationDate = new Date();
-
     }
 
     public Date getCreationDate() {
@@ -53,13 +49,14 @@ public class PDFDocument {
     }
 
     public void moveDoc(DocPath destPath) throws IOException {
-        if (destPath == null || destPath.getPath() == null) throw new NullPointerException("Path can't be NULL");
+        if (destPath == null || destPath.getPath() == null)
+            throw new NullPointerException("Path can't be NULL");
         file.renameTo(new File(destPath.getPath()));
     }
 
     public void openDoc(DocPath path) throws IOException {
         try {
-            File toOpenFile = new File (path.getPath());
+            File toOpenFile = new File(path.getPath());
             Desktop.getDesktop().open(toOpenFile);
         } catch (IOException ex) {
             throw new IOException("File can't be opened");
