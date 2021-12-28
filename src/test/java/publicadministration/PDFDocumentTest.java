@@ -4,9 +4,11 @@ import data.DocPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PDFDocumentTest {
 
@@ -25,14 +27,27 @@ public class PDFDocumentTest {
 
     @Test
     public void getPathTest() {
-        DocPath path = new DocPath("../../res/informe.pdf");
+        DocPath path = new DocPath("src/main/res/informe.pdf");
         assertEquals(path, document.getPath());
     }
 
-    /*@Test
+    @Test
     public void moveDocTest() throws IOException {
-        DocPath newPath = new DocPath("../../res/renamed.pdf");
+        DocPath newPath = new DocPath("src/main/informe.pdf");
         document.moveDoc(newPath);
         assertEquals(newPath, document.getPath());
-    }*/
+        newPath = new DocPath("src/main/res/informe.pdf");
+        document.moveDoc(newPath);
+        assertEquals(newPath, document.getPath());
+    }
+
+    @Test
+    public void openDocTest() {
+        DocPath path = new DocPath("src/main/res/informe.pdf");
+        try {
+            document.openDoc(path);
+        } catch (IOException | NullPointerException |
+                UnsupportedOperationException | SecurityException |
+                IllegalArgumentException ex) { fail("An exception was thrown"); }
+    }
 }

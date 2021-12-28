@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.util.Date;
 
 public class PDFDocument {
-    private static final String DEFAULT_PATH = "../../res/informe.pdf";
-    private final Date creationDate;
-    private final DocPath path;
-    private final File file;
+    private static final String DEFAULT_PATH = "src/main/res/informe.pdf";
+    private Date creationDate;
+    private DocPath path;
+    private File file;
 
     public PDFDocument() {
         this.path = new DocPath(DEFAULT_PATH);
@@ -44,6 +44,8 @@ public class PDFDocument {
         if (destPath == null) throw new NullPointerException("Path can't be NULL");
         if (!file.renameTo(new File(destPath.getPath())))
             throw new IOException("Unable to rename file");
+        path = new DocPath(destPath.getPath());
+        file = new File(destPath.getPath());
     }
 
     public void openDoc(DocPath path) throws IOException {
