@@ -1,4 +1,3 @@
 package exceptions;
 
-public class PrintingException extends Exception {
-}
+public class PrintingException extends Exception {}
