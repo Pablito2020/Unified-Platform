@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,8 +45,12 @@ public class PDFDocumentTest {
         DocPath path = new DocPath("src/main/res/informe.pdf");
         try {
             document.openDoc(path);
-        } catch (IOException | NullPointerException |
-                UnsupportedOperationException | SecurityException |
-                IllegalArgumentException ex) { fail("An exception was thrown"); }
+        } catch (IOException
+                | NullPointerException
+                | UnsupportedOperationException
+                | SecurityException
+                | IllegalArgumentException ex) {
+            fail("An exception was thrown");
+        }
     }
 }
