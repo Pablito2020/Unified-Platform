@@ -9,9 +9,15 @@ public class LaboralLifeDoc extends PDFDocument {
 
     // Initialize attributes
     public LaboralLifeDoc(Nif nif, QuotePeriodsCollection qtP) {
-        throw new RuntimeException("TODO: Constructor");
+        this.nif = nif;
+        this.quotePds = qtP;
     }
 
-    // TODO: Getters
+    public Nif getNif() {
+        return nif;
+    }
 
+    public QuotePeriodsCollection getQuotePds() {
+        return quotePds;
+    }
 }
