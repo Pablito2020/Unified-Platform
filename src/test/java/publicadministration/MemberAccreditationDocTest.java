@@ -34,16 +34,17 @@ public class MemberAccreditationDocTest {
     }
 
     @Test
-    public void sameNifReference() throws BadFormatNifException, BadFormatAccreditationNumberException {
+    public void sameNifReference()
+            throws BadFormatNifException, BadFormatAccreditationNumberException {
         Nif nif = new Nif("49263972L");
         MemberAccreditationDoc memberAccreditationDoc =
                 new MemberAccreditationDoc(nif, new AccreditationNumb("123"));
         assertEquals(nif, memberAccreditationDoc.getNif());
     }
 
-
     @Test
-    public void sameAccreditationNumberReference() throws BadFormatNifException, BadFormatAccreditationNumberException {
+    public void sameAccreditationNumberReference()
+            throws BadFormatNifException, BadFormatAccreditationNumberException {
         AccreditationNumb accreditationNumb = new AccreditationNumb("123");
         MemberAccreditationDoc memberAccreditationDoc =
                 new MemberAccreditationDoc(new Nif("49263972L"), accreditationNumb);
