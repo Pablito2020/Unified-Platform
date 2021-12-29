@@ -2,16 +2,24 @@ package publicadministration;
 
 import data.Nif;
 
-// Represents the laboral life
+import java.util.Objects;
+
 public class LaboralLifeDoc extends PDFDocument {
     private final Nif nif;
-    private final QuotePeriodsCollection quotePds;
+    private final QuotePeriodsCollection quoteCollection;
 
-    // Initialize attributes
-    public LaboralLifeDoc(Nif nif, QuotePeriodsCollection qtP) {
-        throw new RuntimeException("TODO: Constructor");
+    public LaboralLifeDoc(Nif nif, QuotePeriodsCollection quoteCollection) {
+        Objects.requireNonNull(nif, "Nif can't be null");
+        Objects.requireNonNull(quoteCollection, "quoteCollection can't be null");
+        this.nif = nif;
+        this.quoteCollection = quoteCollection;
     }
 
-    // TODO: Getters
+    public Nif getNif() {
+        return nif;
+    }
 
+    public QuotePeriodsCollection getQuotePds() {
+        return quoteCollection;
+    }
 }
