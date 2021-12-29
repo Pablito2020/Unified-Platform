@@ -10,7 +10,7 @@ public class LaboralLifeDoc extends PDFDocument {
 
     public LaboralLifeDoc(Nif nif, QuotePeriodsCollection quoteCollection) {
         Objects.requireNonNull(nif, "Nif can't be null");
-        Objects.requireNonNull(quoteCollection, "quoteCollection can't be null");
+        Objects.requireNonNull(quoteCollection, "Quote Collection can't be null");
         this.nif = nif;
         this.quoteCollection = quoteCollection;
     }
@@ -19,7 +19,7 @@ public class LaboralLifeDoc extends PDFDocument {
         return nif;
     }
 
-    public QuotePeriodsCollection getQuotePds() {
+    public QuotePeriodsCollection getQuoteCollection() {
         return quoteCollection;
     }
 }
