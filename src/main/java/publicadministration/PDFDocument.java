@@ -49,8 +49,7 @@ public class PDFDocument {
     }
 
     public void openDoc(DocPath path) throws IOException {
-        if (path == null)
-            throw new NullPointerException("Path can't be null");
+        if (path == null) throw new NullPointerException("Path can't be null");
         File toOpenFile = new File(path.getPath());
         Desktop.getDesktop().open(toOpenFile);
     }
