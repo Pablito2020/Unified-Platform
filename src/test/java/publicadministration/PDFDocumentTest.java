@@ -2,6 +2,7 @@ package publicadministration;
 
 import data.DocPath;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -28,9 +29,9 @@ public class PDFDocumentTest {
         DocPath newPath = new DocPath("src/main/informe.pdf");
         document.moveDoc(newPath);
         assertEquals(newPath, document.getPath());
-        newPath = new DocPath("src/main/res/informe.pdf");
+        // PDF has to be moved back to the default path
+        newPath = new DocPath(PDFDocument.DEFAULT_PATH);
         document.moveDoc(newPath);
-        assertEquals(newPath, document.getPath());
     }
 
     @Test
@@ -43,12 +44,13 @@ public class PDFDocumentTest {
     }
 
     @Test
-    public void moveDocFailTest() {
+    @DisplayName("Move a document that doesn't exist")
+    public void moveDocNoExistsTest() {
         Throwable ex =
                 assertThrows(
                         IOException.class,
                         () -> {
-                            document.moveDoc(new DocPath("src/java/lablifedoc.txt"));
+                            document.moveDoc(new DocPath("src/java/no-exists.txt"));
                         });
         assertEquals("Unable to rename file", ex.getMessage());
     }
@@ -56,14 +58,27 @@ public class PDFDocumentTest {
     @Test
     public void openDocTest() {
         DocPath path = new DocPath("src/main/res/informe.pdf");
-        try {
-            document.openDoc(path);
-        } catch (IOException
-                | NullPointerException
-                | UnsupportedOperationException
-                | SecurityException
-                | IllegalArgumentException ex) {
-            fail("An exception was thrown");
-        }
+        assertDoesNotThrow(() -> document.openDoc(path));
+    }
+
+    @Test
+    public void openDocNullTest() {
+        Throwable ex =
+                assertThrows(
+                        NullPointerException.class,
+                        () -> {
+                            document.openDoc(null);
+                        });
+        assertEquals("Path can't be null", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("Open a document that doesn't exist")
+    public void openDocNoFileTest() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    document.openDoc(new DocPath("src/no-exists.pdf"));
+                });
     }
 }

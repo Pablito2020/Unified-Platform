@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Date;
 
 public class PDFDocument {
-    private static final String DEFAULT_PATH = "src/main/res/informe.pdf";
+    static final String DEFAULT_PATH = "src/main/res/informe.pdf";
     private final Date creationDate;
     private DocPath path;
     private File file;
@@ -49,6 +49,8 @@ public class PDFDocument {
     }
 
     public void openDoc(DocPath path) throws IOException {
+        if (path == null)
+            throw new NullPointerException("Path can't be null");
         File toOpenFile = new File(path.getPath());
         Desktop.getDesktop().open(toOpenFile);
     }
