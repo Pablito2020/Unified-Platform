@@ -5,6 +5,7 @@ import data.Nif;
 import data.PINcode;
 import data.Password;
 import exceptions.*;
+import services.Service;
 
 import java.net.ConnectException;
 import java.util.Date;
@@ -14,7 +15,7 @@ public class UnifiedPlatform {
     // Input events
 
     public void processSearcher() {
-        throw new RuntimeException("Not implemented");
+        System.out.println("Loading text message for introducing the key words");
     }
 
     public void enterKeyWords(String keyWord) throws AnyKeyWordProcedureException {
@@ -73,7 +74,10 @@ public class UnifiedPlatform {
     // Other operations
 
     private String searchKeyWords(String keyWord) throws AnyKeyWordProcedureException {
-        throw new RuntimeException("Not implemented");
+        for (Service service : Service.values()) {
+            if (service.getServiceName().equals(keyWord)) return service.getServiceName();
+        }
+        throw new AnyKeyWordProcedureException(keyWord + " isn't an available action");
     }
 
     private void openDocument(DocPath path) throws BadPathException {
