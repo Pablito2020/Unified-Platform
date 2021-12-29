@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class PDFDocument {
     private static final String DEFAULT_PATH = "src/main/res/informe.pdf";
-    private Date creationDate;
+    private final Date creationDate;
     private DocPath path;
     private File file;
 

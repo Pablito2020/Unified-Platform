@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,12 +15,6 @@ public class PDFDocumentTest {
     @BeforeEach
     public void createPDFDocument() {
         document = new PDFDocument();
-    }
-
-    @Test
-    public void getCreationDateTest() {
-        Date date = new Date();
-        assertEquals(date.toString(), document.getCreationDate().toString());
     }
 
     @Test
@@ -38,6 +31,26 @@ public class PDFDocumentTest {
         newPath = new DocPath("src/main/res/informe.pdf");
         document.moveDoc(newPath);
         assertEquals(newPath, document.getPath());
+    }
+
+    @Test
+    public void moveDocNullTest() {
+        assertThrows(
+                NullPointerException.class,
+                () -> {
+                    document.moveDoc(null);
+                });
+    }
+
+    @Test
+    public void moveDocFailTest() {
+        Throwable ex =
+                assertThrows(
+                        IOException.class,
+                        () -> {
+                            document.moveDoc(new DocPath("src/java/lablifedoc.txt"));
+                        });
+        assertEquals("Unable to rename file", ex.getMessage());
     }
 
     @Test
