@@ -1,5 +1,6 @@
 package publicadministration;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -32,15 +33,29 @@ public class QuotePeriodTest {
     }
 
     @Test
+    @DisplayName("Date and Number of Days are bigger than today")
+    public void sumOfDaysAndDateBiggerThanToday() {
+        Throwable ex =
+                assertThrows(
+                        NumberFormatException.class,
+                        () -> {
+                            new QuotePeriod(new Date(), 2);
+                        });
+        assertEquals("Days + Date shouldn't be bigger than today", ex.getMessage());
+    }
+
+
+    @Test
     public void getDateTest() {
-        Date date = new Date();
+        Date date = new Date(164105923); // Date -> Fri Jan 02 22:35:05 CET 1970
         QuotePeriod quote = new QuotePeriod(date, 20);
         assertEquals(date, quote.getInitDay());
     }
 
     @Test
     public void getNumberDaysTest() {
-        QuotePeriod quote = new QuotePeriod(new Date(), 10);
+        Date date = new Date(164105923); // Date -> Fri Jan 02 22:35:05 CET 1970
+        QuotePeriod quote = new QuotePeriod(date, 10);
         assertEquals(10, quote.getNumDays());
     }
 }

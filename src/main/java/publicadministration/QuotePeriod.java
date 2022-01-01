@@ -1,6 +1,7 @@
 package publicadministration;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class QuotePeriod {
 
@@ -11,6 +12,8 @@ public class QuotePeriod {
         if (date == null) throw new NullPointerException("Date can't reference to null");
         if (numberDays <= 0)
             throw new NumberFormatException("Days should be bigger or equal than 1");
+        if (date.getTime() + TimeUnit.DAYS.toMillis(numberDays) > new Date().getTime())
+            throw new NumberFormatException("Days + Date shouldn't be bigger than today");
         this.initDay = date;
         this.numDays = numberDays;
     }
