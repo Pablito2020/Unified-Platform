@@ -44,7 +44,6 @@ public class QuotePeriodTest {
         assertEquals("Days + Date shouldn't be bigger than today", ex.getMessage());
     }
 
-
     @Test
     public void getDateTest() {
         Date date = new Date(164105923); // Date -> Fri Jan 02 22:35:05 CET 1970
