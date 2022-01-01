@@ -33,7 +33,8 @@ public class UnifiedPlatform {
     public void enterKeyWords(String keyWord) throws AnyKeyWordProcedureException {
         String service = searchKeyWords(keyWord);
         System.out.println(service);
-        // TODO: This needs to instantiate a SS instance, but how? We need an anonymous class or something!
+        // TODO: This needs to instantiate a SS instance, but how? We need an anonymous class or
+        // something!
         // this.securitySocial = Procedures.valueOf(service).getInstance();
     }
 
@@ -121,5 +122,4 @@ public class UnifiedPlatform {
         System.out.println("Downloading Document");
         throw new UnsupportedOperationException("No implemented");
     }
-
 }

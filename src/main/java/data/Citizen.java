@@ -31,5 +31,4 @@ public class Citizen {
     public void setDocument(PDFDocument document) {
         this.document = document;
     }
-
 }
