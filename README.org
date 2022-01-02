@@ -1,11 +1,27 @@
-#+TITLE: Unified Platform
+#+TITLE: Unified Platform Project 📔
 #+AUTHOR: Pablo Fraile Alonso, Roger Fontova Torres and Oscar Salcedo Heredia
 
-* TODO (questions):
-** Exceptions:
-- [ ] Nif: BadFormatNifException is checked (because the user can send a bad parametter and the application could catch the exception).
-- [ ] Nif: If string is null, should we send our own exception? Or we can use the NullPointerException from java? + It makes sense that te exception is unchecked, because it is a programmer fault, not the user.
-- [ ] PIN: Is pin only a number?
+* Execute Tests 🧪:
+You can run the tests with IntelliJ or with maven.
 
-* TODO (work):
-- [ ]
+** With IntelliJ:
+Go to the src/test/java package, right click and select the "execute tests" option.
+
+** With Maven:
+Make sure that you have the Java Path exported. The JDK version should be 17. In case you have to configure it in linux you can do:
+
+#+BEGIN_SRC sh
+    $ export JAVA_HOME=/usr/lib/jvm/java-17-openjdk/
+#+END_SRC
+
+After that, go to the root of the project and execute:
+#+BEGIN_SRC sh
+    $ mvn test
+#+END_SRC
+
+
+
+* Contributing 💬:
+Before contributing, see the [[https://github.com/Pablito2020/Unified-Platform/issues][issues]] page for knowing which changes/improvements can be made to the project. After you choose the problem you want to fix, you have to assign yourself to the issue.
+
+After that, create a new branch with your name (for example: pablo), and then commit to it. After all the changes are done, you can nominate to all the members inside the issue and then they will give you the okay to merge your branch to develop.

@@ -100,7 +100,7 @@ public class UnifiedPlatform {
 
     private String searchKeyWords(String keyWord) throws AnyKeyWordProcedureException {
         for (Procedures service : Procedures.values()) {
-            if (service.getKeyWord().equals(keyWord)) return service.toString();
+            if (service.getKeyWord().equals(keyWord)) return service.getAAPPName();
         }
         throw new AnyKeyWordProcedureException(keyWord + " isn't an available action");
     }
