@@ -3,6 +3,7 @@ package publicadministration;
 import data.*;
 import enums.AuthenticationMethod;
 import enums.CertificationReport;
+import enums.ClaveUserStatus;
 import enums.Procedures;
 import exceptions.*;
 import services.CertificationAuthority;
@@ -20,10 +21,6 @@ public class UnifiedPlatform {
     private AuthenticationMethod authMethod;
     private Citizen citizen;
 
-    public UnifiedPlatform(SS securitySocial) {
-        this.securitySocial = securitySocial;
-    }
-
     // Input events
 
     public void processSearcher() {
@@ -33,8 +30,6 @@ public class UnifiedPlatform {
     public void enterKeyWords(String keyWord) throws AnyKeyWordProcedureException {
         String action = searchKeyWords(keyWord);
         System.out.println(action);
-        // TODO: This needs to instantiate a SS instance, but how? We need an anonymous class or
-        // something!
         // this.securitySocial = Procedures.valueOf(action).getInstance();
     }
 
@@ -63,8 +58,9 @@ public class UnifiedPlatform {
 
     public void enterNIFPINobt(Nif nif, Date valDate)
             throws NifNotRegisteredException, IncorrectValDateException,
-                    AnyMobileRegisteredException, ConnectException {
-        this.citizen = new Citizen(nif);
+            AnyMobileRegisteredException, ConnectException {
+        // TODO:  should this be instantiated here or on the tests?
+        // this.citizen = new Citizen(nif);
         this.citizen.setAffiliated(this.certificationAuthority.sendPIN(nif, valDate));
     }
 
@@ -72,16 +68,29 @@ public class UnifiedPlatform {
             throws NotValidPINException, NotAffiliatedException, ConnectException {
         if (!citizen.isAffiliated()) throw new NotAffiliatedException();
         this.certificationAuthority.checkPIN(citizen.getNif(), pin);
-        // TODO: Check which document we need to use
-        citizen.setDocument(securitySocial.getLaboralLife(citizen.getNif()));
+        PDFDocument document = getReport();
+        citizen.setDocument(document);
         throw new RuntimeException("TODO: Check return value!");
+    }
+
+    private PDFDocument getReport() throws NotAffiliatedException, ConnectException {
+        switch (reportType) {
+            case LABORAL_LIFE_DOC -> {
+                return securitySocial.getLaboralLife(citizen.getNif());
+            }
+            case MEMBER_ACCREDITATION_DOC -> {
+                return securitySocial.getMembAccred(citizen.getNif());
+            }
+            default -> throw new IllegalArgumentException("Unsupported report");
+        }
     }
 
     public void enterCred(Nif nif, Password password)
             throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException,
-                    ConnectException {
-        this.certificationAuthority.checkCredentials(nif, password);
-        throw new RuntimeException("TODO: Check return value!");
+            ConnectException {
+        ClaveUserStatus claveOption = ClaveUserStatus.valueOf(this.certificationAuthority.checkCredentials(nif, password));
+        if(claveOption == ClaveUserStatus.REGISTERED_REINFORCED)
+            this.certificationAuthority.sendPIN(nif, citizen.getDNI().getValDate());
     }
 
     private void printDocument() throws BadPathException, PrintingException {
