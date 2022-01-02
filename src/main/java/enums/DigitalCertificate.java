@@ -16,5 +16,4 @@ public enum DigitalCertificate {
         }
         throw new IllegalArgumentException(value + " unsupported byte");
     }
-
 }

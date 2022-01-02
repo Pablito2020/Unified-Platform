@@ -6,5 +6,6 @@ import data.Nif;
 import exceptions.DecryptationException;
 
 public interface Decryptor {
-    Nif decryptIDdata(EncryptedData encryptedData, EncryptingKey privateKey) throws DecryptationException;
+    Nif decryptIDdata(EncryptedData encryptedData, EncryptingKey privateKey)
+            throws DecryptationException;
 }

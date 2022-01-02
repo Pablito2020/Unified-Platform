@@ -1,4 +1,3 @@
 package exceptions;
 
-public class NotValidCertificateException extends Exception {
-}
+public class NotValidCertificateException extends Exception {}

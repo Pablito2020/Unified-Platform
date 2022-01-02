@@ -19,5 +19,4 @@ public class EncryptingKey {
     public BigInteger getPublicKey() {
         return publicKey;
     }
-
 }

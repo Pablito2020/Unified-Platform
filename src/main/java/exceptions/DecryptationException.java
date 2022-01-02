@@ -1,4 +1,3 @@
 package exceptions;
 
-public class DecryptationException extends Exception {
-}
+public class DecryptationException extends Exception {}
