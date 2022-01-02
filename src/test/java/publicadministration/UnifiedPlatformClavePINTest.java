@@ -89,7 +89,8 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
         unifiedPlatform.enterPIN(correctPin);
         assertEquals(
                 unifiedPlatform.getCitizen().getDocument().toString(),
-                new LaboralLifeDoc(citizen.getDNI().getNif(), new QuotePeriodsCollection()).toString());
+                new LaboralLifeDoc(citizen.getDNI().getNif(), new QuotePeriodsCollection())
+                        .toString());
     }
 
     @Test

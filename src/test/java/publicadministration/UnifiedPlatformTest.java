@@ -22,9 +22,12 @@ public interface UnifiedPlatformTest {
         PrintStream outStream = System.out;
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         String expectedOutput =
-                "Loading text message for introducing the key words\nSelected SS AAPP\n"
-                        + "Selected Citizens\nReport Options: \n"
-                        + "Report: LABORAL_LIFE_DOC has byte: 0Report: MEMBER_ACCREDITATION_DOC has byte: 1\n";
+                "Loading text message for introducing the key words\n"
+                    + "Selected SS AAPP\n"
+                    + "Selected Citizens\n"
+                    + "Report Options: \n"
+                    + "Report: LABORAL_LIFE_DOC has byte: 0Report: MEMBER_ACCREDITATION_DOC has"
+                    + " byte: 1\n";
 
         System.setOut(new PrintStream(outContent));
         unifiedPlatform.processSearcher();
@@ -41,8 +44,8 @@ public interface UnifiedPlatformTest {
 
     public void enterPinTest()
             throws NotValidPINException, NotAffiliatedException, ConnectException,
-            IncorrectValDateException, NifNotRegisteredException,
-            AnyMobileRegisteredException;
+                    IncorrectValDateException, NifNotRegisteredException,
+                    AnyMobileRegisteredException;
 
     void enterCredTest();
 

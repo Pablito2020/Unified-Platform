@@ -2,7 +2,6 @@ package data;
 
 import publicadministration.PDFDocument;
 
-import java.util.Date;
 import java.util.Objects;
 
 public class Citizen {
@@ -40,7 +39,9 @@ public class Citizen {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Citizen citizen = (Citizen) o;
-        return affiliated == citizen.affiliated && Objects.equals(dni, citizen.dni) && Objects.equals(document, citizen.document);
+        return affiliated == citizen.affiliated
+                && Objects.equals(dni, citizen.dni)
+                && Objects.equals(document, citizen.document);
     }
 
     @Override

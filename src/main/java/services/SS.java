@@ -12,5 +12,6 @@ import java.net.ConnectException;
 public interface SS { // External service for Social Security Govern administration
     LaboralLifeDoc getLaboralLife(Nif nif) throws NotAffiliatedException, ConnectException;
 
-    MemberAccreditationDoc getMembAccred(Nif nif) throws NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException;
+    MemberAccreditationDoc getMembAccred(Nif nif)
+            throws NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException;
 }

@@ -28,7 +28,8 @@ public class LaboralLifeDoc extends PDFDocument {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LaboralLifeDoc that = (LaboralLifeDoc) o;
-        return Objects.equals(nif, that.nif) && Objects.equals(quoteCollection, that.quoteCollection);
+        return Objects.equals(nif, that.nif)
+                && Objects.equals(quoteCollection, that.quoteCollection);
     }
 
     @Override
