@@ -7,6 +7,7 @@ public class Citizen {
     private final Nif nif;
     private boolean affiliated;
     private PDFDocument document;
+    private Password password;
 
     public Citizen(Nif nif) {
         this.nif = nif;
@@ -30,5 +31,13 @@ public class Citizen {
 
     public void setDocument(PDFDocument document) {
         this.document = document;
+    }
+
+    public Password getPassword() {
+        return password;
+    }
+
+    public void setPassword(Password password) {
+        this.password = password;
     }
 }

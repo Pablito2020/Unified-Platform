@@ -3,25 +3,35 @@ package publicadministration;
 import data.*;
 import enums.AuthenticationMethod;
 import enums.CertificationReport;
+import enums.DigitalCertificate;
 import enums.Procedures;
 import exceptions.*;
 import services.CertificationAuthority;
+import services.Decryptor;
 import services.SS;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.ConnectException;
 import java.util.Date;
+import java.util.Random;
 
 public class UnifiedPlatform {
 
+    private final EncryptingKey keys;
     private SS securitySocial;
     private CertificationAuthority certificationAuthority;
     private CertificationReport reportType;
     private AuthenticationMethod authMethod;
+    private DigitalCertificate digitalCertificate;
+    private Decryptor decryptor;
     private Citizen citizen;
 
-    public UnifiedPlatform(SS securitySocial) {
-        this.securitySocial = securitySocial;
+    public UnifiedPlatform() {
+        this.keys =
+                new EncryptingKey(
+                        new BigInteger(BigInteger.TEN.bitCount(), new Random()),
+                        new BigInteger(BigInteger.TEN.bitCount(), new Random()));
     }
 
     // Input events
@@ -121,5 +131,27 @@ public class UnifiedPlatform {
     private void downloadDocument(DocPath path) throws BadPathException {
         System.out.println("Downloading Document");
         throw new UnsupportedOperationException("No implemented");
+    }
+
+    // Optional operations
+
+    public void selectCertificate(byte opc) {
+        digitalCertificate = DigitalCertificate.valueOf(opc);
+    }
+
+    public void enterPassword(Password password)
+            throws NotValidPasswordException, NotValidCertificateException, ConnectException,
+                    DecryptationException {
+        if (!citizen.getPassword().equals(password)) throw new NotValidPasswordException();
+        EncryptedData result = certificationAuthority.sendCertfAuth(keys);
+        Nif resultNif = decryptIDdata(result);
+    }
+
+    private Nif decryptIDdata(EncryptedData encryptData) throws DecryptationException {
+        return decryptor.decryptIDdata(encryptData, keys);
+    }
+
+    public void setDecryptor(Decryptor decryptor) {
+        this.decryptor = decryptor;
     }
 }
