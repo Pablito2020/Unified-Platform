@@ -16,13 +16,13 @@ public class AccreditationNumbTest {
     }
 
     @Test
-    public void badLengthNumbTest(){
-        Throwable
-                ex = Assertions.assertThrows(
-                    BadFormatAccreditationNumberException.class,
-                () -> {
-                        new AccreditationNumb("1234");
-                });
+    public void badLengthNumbTest() {
+        Throwable ex =
+                Assertions.assertThrows(
+                        BadFormatAccreditationNumberException.class,
+                        () -> {
+                            new AccreditationNumb("1234");
+                        });
         assertEquals("Accreditation number must have 12 digits", ex.getMessage());
     }
 
