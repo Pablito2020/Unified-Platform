@@ -1,6 +1,7 @@
 package publicadministration;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class QuotePeriod {
@@ -36,5 +37,18 @@ public class QuotePeriod {
                 + numDays
                 + '\''
                 + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuotePeriod that = (QuotePeriod) o;
+        return numDays == that.numDays && Objects.equals(initDay, that.initDay);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(initDay, numDays);
     }
 }
