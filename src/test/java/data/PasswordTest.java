@@ -21,7 +21,7 @@ public class PasswordTest {
 
     @Test
     @DisplayName("Empty password")
-    public void badFormatPassword1(){
+    public void badFormatPassword1() {
         Throwable ex =
                 assertThrows(
                         BadFormatPasswordException.class,
@@ -33,7 +33,7 @@ public class PasswordTest {
 
     @Test
     @DisplayName("Password length bigger than 20")
-    public void badFormatPassword2(){
+    public void badFormatPassword2() {
         Throwable ex =
                 assertThrows(
                         BadFormatPasswordException.class,
