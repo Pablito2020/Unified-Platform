@@ -6,7 +6,7 @@ import data.Password;
 import exceptions.*;
 
 import java.net.ConnectException;
-import java.sql.Date;
+import java.util.Date;
 
 public interface CertificationAuthority {
     boolean sendPIN(Nif nif, Date date)

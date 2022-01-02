@@ -27,7 +27,8 @@ public class QuotePeriodsCollectionTest {
 
     @Test
     public void addSameElement() {
-        QuotePeriod quote = new QuotePeriod(new Date(), 20);
+        Date date = new Date(164105923); // Date -> Fri Jan 02 22:35:05 CET 1970
+        QuotePeriod quote = new QuotePeriod(date, 20);
         assertTrue(collection.addQuotePeriod(quote));
         assertFalse(collection.addQuotePeriod(quote));
     }
