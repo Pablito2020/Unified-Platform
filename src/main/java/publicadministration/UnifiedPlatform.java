@@ -35,7 +35,7 @@ public class UnifiedPlatform {
         System.out.println(action);
         // TODO: This needs to instantiate a SS instance, but how? We need an anonymous class or
         // something!
-        //this.securitySocial = Procedures.valueOf(action).getInstance();
+        // this.securitySocial = Procedures.valueOf(action).getInstance();
     }
 
     public void selectSS() {
