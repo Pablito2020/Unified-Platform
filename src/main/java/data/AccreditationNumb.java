@@ -4,14 +4,14 @@ import exceptions.BadFormatAccreditationNumberException;
 
 public final class AccreditationNumb {
 
-    private static final String NUMBER_REGEX = "^[0-9]+$";
+    private static final String NUMBER_REGEX = "^[0-9]{12}$";
 
     private final String number;
 
     public AccreditationNumb(String number) throws BadFormatAccreditationNumberException {
         if (number == null) throw new NullPointerException("number shouldn't reference to null");
         if (!number.matches(NUMBER_REGEX))
-            throw new BadFormatAccreditationNumberException("only numbers are allowed.");
+            throw new BadFormatAccreditationNumberException("Accreditation number must have 12 digits");
         this.number = number;
     }
 
