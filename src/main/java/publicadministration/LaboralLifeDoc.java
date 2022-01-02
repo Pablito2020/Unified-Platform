@@ -22,4 +22,17 @@ public class LaboralLifeDoc extends PDFDocument {
     public QuotePeriodsCollection getQuoteCollection() {
         return quoteCollection;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LaboralLifeDoc that = (LaboralLifeDoc) o;
+        return Objects.equals(nif, that.nif) && Objects.equals(quoteCollection, that.quoteCollection);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nif, quoteCollection);
+    }
 }
