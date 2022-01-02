@@ -31,11 +31,11 @@ public class UnifiedPlatform {
     }
 
     public void enterKeyWords(String keyWord) throws AnyKeyWordProcedureException {
-        String service = searchKeyWords(keyWord);
-        System.out.println(service);
+        String action = searchKeyWords(keyWord);
+        System.out.println(action);
         // TODO: This needs to instantiate a SS instance, but how? We need an anonymous class or
         // something!
-        // this.securitySocial = Procedures.valueOf(service).getInstance();
+        //this.securitySocial = Procedures.valueOf(action).getInstance();
     }
 
     public void selectSS() {
@@ -100,7 +100,7 @@ public class UnifiedPlatform {
 
     private String searchKeyWords(String keyWord) throws AnyKeyWordProcedureException {
         for (Procedures service : Procedures.values()) {
-            if (service.getKeyWord().equals(keyWord)) return service.toString();
+            if (service.getKeyWord().equals(keyWord)) return service.getAAPPName();
         }
         throw new AnyKeyWordProcedureException(keyWord + " isn't an available action");
     }
