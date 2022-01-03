@@ -47,8 +47,6 @@ public interface UnifiedPlatformTest {
                     IncorrectValDateException, NifNotRegisteredException,
                     AnyMobileRegisteredException;
 
-    void enterCredTest();
-
     void enterBadNifNIFPINObtTest();
 
     void enterBadDateNIFPINObtTest();

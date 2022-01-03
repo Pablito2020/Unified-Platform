@@ -3,6 +3,7 @@ package publicadministration;
 import data.*;
 import enums.AuthenticationMethod;
 import enums.CertificationReport;
+import enums.ClaveUserStatus;
 import enums.Procedures;
 import exceptions.*;
 import services.CertificationAuthority;
@@ -66,8 +67,9 @@ public class UnifiedPlatform {
     public void enterNIFPINobt(Nif nif, Date valDate)
             throws NifNotRegisteredException, IncorrectValDateException,
                     AnyMobileRegisteredException, ConnectException {
-        this.citizen = new Citizen(new DNI(valDate, nif));
         this.citizen.setAffiliated(this.certificationAuthority.sendPIN(nif, valDate));
+        if (citizen.getTelephoneNumber() == null)
+            throw new AnyMobileRegisteredException();
     }
 
     public void enterPIN(PINcode pin)
@@ -80,9 +82,10 @@ public class UnifiedPlatform {
 
     public void enterCred(Nif nif, Password password)
             throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException,
-                    ConnectException {
-        this.certificationAuthority.checkCredentials(nif, password);
-        throw new RuntimeException("TODO: Check return value!");
+            ConnectException, IncorrectValDateException {
+        ClaveUserStatus claveOption = ClaveUserStatus.valueOf(this.certificationAuthority.checkCredentials(nif, password));
+        if(claveOption == ClaveUserStatus.REGISTERED_REINFORCED)
+            this.certificationAuthority.sendPIN(nif, citizen.getDNI().getValDate());
     }
 
     private void printDocument() throws BadPathException, PrintingException {

@@ -9,13 +9,19 @@ public class Citizen {
     private final DNI dni;
     private boolean affiliated;
     private PDFDocument document;
+    private Telephone telephoneNumber;
 
-    public Citizen(DNI dni) {
+    public Citizen(DNI dni, Telephone telephoneNumber) {
         this.dni = dni;
+        this.telephoneNumber = telephoneNumber;
     }
 
     public DNI getDNI() {
         return dni;
+    }
+
+    public Telephone getTelephoneNumber() {
+        return telephoneNumber;
     }
 
     public boolean isAffiliated() {
@@ -32,6 +38,10 @@ public class Citizen {
 
     public void setDocument(PDFDocument document) {
         this.document = document;
+    }
+
+    public void setTelephoneNumber(Telephone telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
     }
 
     @Override

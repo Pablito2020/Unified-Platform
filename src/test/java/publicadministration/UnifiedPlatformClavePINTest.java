@@ -2,6 +2,7 @@ package publicadministration;
 
 import data.*;
 import enums.AuthenticationMethod;
+import enums.ClaveUserStatus;
 import exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,12 +22,14 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
     AuthenticationMethod clavePIN;
     PINcode correctPin;
     UnifiedPlatform unifiedPlatform;
+    ClaveUserStatus registered;
 
     @BeforeEach
-    public void createSS() throws BadFormatNifException, BadFormatPinException {
+    public void createSS() throws BadFormatNifException, BadFormatPinException, InvalidTelephoneFormat {
         clavePIN = AuthenticationMethod.CLAVE_PIN;
-        citizen = new Citizen(new DNI(new Date(), new Nif("48059123C")));
+        citizen = new Citizen(new DNI(new Date(), new Nif("48059123C")), new Telephone("678546755"));
         correctPin = new PINcode("123");
+        registered = ClaveUserStatus.REGISTERED_REINFORCED;
 
         ss =
                 new SS() {
@@ -77,6 +80,7 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
         unifiedPlatform.setAuthMethod(clavePIN);
         unifiedPlatform.setCertificationAuthority(certificationAuthority);
         unifiedPlatform.setSecuritySocial(ss);
+        unifiedPlatform.setCitizen(citizen);
     }
 
     @Test
@@ -100,6 +104,18 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
         unifiedPlatform.enterNIFPINobt(citizen.getDNI().getNif(), citizen.getDNI().getValDate());
         assertEquals(unifiedPlatform.getCitizen().getDNI(), citizen.getDNI());
         assertTrue(unifiedPlatform.getCitizen().isAffiliated());
+    }
+
+
+    @Test
+    public void enterNotRegisteredMobileNIFPInObtTest() {
+        Citizen newCitizen = new Citizen(citizen.getDNI(), null);
+        unifiedPlatform.setCitizen(newCitizen);
+        assertThrows(
+                AnyMobileRegisteredException.class,
+                () -> {
+                    unifiedPlatform.enterNIFPINobt(citizen.getDNI().getNif(), citizen.getDNI().getValDate());
+                });
     }
 
     @Test
@@ -130,15 +146,5 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
     public void badSelectAuthMethodTest() {
         unifiedPlatform.selectAuthMethod((byte) 1);
         assertNotEquals(unifiedPlatform.getAuthMethod(), clavePIN);
-    }
-
-    @Test
-    public void enterNotRegisteredMobileNIFPInObtTest() {
-        throw new RuntimeException("TODO: Telefon");
-    }
-
-    @Test
-    public void enterCredTest() {
-        throw new RuntimeException("Things to do on function enterCred");
     }
 }
