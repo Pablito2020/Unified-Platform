@@ -68,8 +68,7 @@ public class UnifiedPlatform {
             throws NifNotRegisteredException, IncorrectValDateException,
                     AnyMobileRegisteredException, ConnectException {
         this.citizen.setAffiliated(this.certificationAuthority.sendPIN(nif, valDate));
-        if (citizen.getTelephoneNumber() == null)
-            throw new AnyMobileRegisteredException();
+        if (citizen.getTelephoneNumber() == null) throw new AnyMobileRegisteredException();
     }
 
     public void enterPIN(PINcode pin)
@@ -82,9 +81,11 @@ public class UnifiedPlatform {
 
     public void enterCred(Nif nif, Password password)
             throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException,
-            ConnectException, IncorrectValDateException {
-        ClaveUserStatus claveOption = ClaveUserStatus.valueOf(this.certificationAuthority.checkCredentials(nif, password));
-        if(claveOption == ClaveUserStatus.REGISTERED_REINFORCED)
+                    ConnectException, IncorrectValDateException {
+        ClaveUserStatus claveOption =
+                ClaveUserStatus.valueOf(
+                        this.certificationAuthority.checkCredentials(nif, password));
+        if (claveOption == ClaveUserStatus.REGISTERED_REINFORCED)
             this.certificationAuthority.sendPIN(nif, citizen.getDNI().getValDate());
     }
 

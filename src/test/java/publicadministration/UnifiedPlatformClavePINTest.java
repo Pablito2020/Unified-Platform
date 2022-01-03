@@ -25,9 +25,11 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
     ClaveUserStatus registered;
 
     @BeforeEach
-    public void createSS() throws BadFormatNifException, BadFormatPinException, InvalidTelephoneFormat {
+    public void createSS()
+            throws BadFormatNifException, BadFormatPinException, InvalidTelephoneFormat {
         clavePIN = AuthenticationMethod.CLAVE_PIN;
-        citizen = new Citizen(new DNI(new Date(), new Nif("48059123C")), new Telephone("678546755"));
+        citizen =
+                new Citizen(new DNI(new Date(), new Nif("48059123C")), new Telephone("678546755"));
         correctPin = new PINcode("123");
         registered = ClaveUserStatus.REGISTERED_REINFORCED;
 
@@ -106,7 +108,6 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
         assertTrue(unifiedPlatform.getCitizen().isAffiliated());
     }
 
-
     @Test
     public void enterNotRegisteredMobileNIFPInObtTest() {
         Citizen newCitizen = new Citizen(citizen.getDNI(), null);
@@ -114,7 +115,8 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
         assertThrows(
                 AnyMobileRegisteredException.class,
                 () -> {
-                    unifiedPlatform.enterNIFPINobt(citizen.getDNI().getNif(), citizen.getDNI().getValDate());
+                    unifiedPlatform.enterNIFPINobt(
+                            citizen.getDNI().getNif(), citizen.getDNI().getValDate());
                 });
     }
 
