@@ -28,6 +28,10 @@ public class PDFDocument {
         return path;
     }
 
+    public File getFile() {
+        return file;
+    }
+
     // Converts to String members Date and DocPath
     @Override
     public String toString() {
