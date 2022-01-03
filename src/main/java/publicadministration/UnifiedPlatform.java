@@ -1,10 +1,7 @@
 package publicadministration;
 
 import data.*;
-import enums.AuthenticationMethod;
-import enums.CertificationReport;
-import enums.DigitalCertificate;
-import enums.Procedures;
+import enums.*;
 import exceptions.*;
 import services.CertificationAuthority;
 import services.Decryptor;
@@ -18,7 +15,7 @@ import java.util.Random;
 
 public class UnifiedPlatform {
 
-    private final EncryptingKey keys;
+    private EncryptingKey keys;
     private SS securitySocial;
     private CertificationAuthority certificationAuthority;
     private CertificationReport reportType;
@@ -74,24 +71,26 @@ public class UnifiedPlatform {
     public void enterNIFPINobt(Nif nif, Date valDate)
             throws NifNotRegisteredException, IncorrectValDateException,
                     AnyMobileRegisteredException, ConnectException {
-        this.citizen = new Citizen(nif);
         this.citizen.setAffiliated(this.certificationAuthority.sendPIN(nif, valDate));
+        if (citizen.getTelephoneNumber() == null) throw new AnyMobileRegisteredException();
     }
 
     public void enterPIN(PINcode pin)
             throws NotValidPINException, NotAffiliatedException, ConnectException {
         if (!citizen.isAffiliated()) throw new NotAffiliatedException();
-        this.certificationAuthority.checkPIN(citizen.getNif(), pin);
+        this.certificationAuthority.checkPIN(citizen.getDni().getNif(), pin);
         // TODO: Check which document we need to use
-        citizen.setDocument(securitySocial.getLaboralLife(citizen.getNif()));
-        throw new RuntimeException("TODO: Check return value!");
+        citizen.setDocument(securitySocial.getLaboralLife(citizen.getDni().getNif()));
     }
 
     public void enterCred(Nif nif, Password password)
             throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException,
-                    ConnectException {
-        this.certificationAuthority.checkCredentials(nif, password);
-        throw new RuntimeException("TODO: Check return value!");
+                    ConnectException, IncorrectValDateException {
+        ClaveUserStatus claveOption =
+                ClaveUserStatus.valueOf(
+                        this.certificationAuthority.checkCredentials(nif, password));
+        if (claveOption == ClaveUserStatus.REGISTERED_REINFORCED)
+            this.certificationAuthority.sendPIN(nif, citizen.getDni().getValDate());
     }
 
     private void printDocument() throws BadPathException, PrintingException {
@@ -153,5 +152,45 @@ public class UnifiedPlatform {
 
     public void setDecryptor(Decryptor decryptor) {
         this.decryptor = decryptor;
+    }
+
+    public SS getSecuritySocial() {
+        return securitySocial;
+    }
+
+    public void setSecuritySocial(SS securitySocial) {
+        this.securitySocial = securitySocial;
+    }
+
+    public CertificationAuthority getCertificationAuthority() {
+        return certificationAuthority;
+    }
+
+    public void setCertificationAuthority(CertificationAuthority certificationAuthority) {
+        this.certificationAuthority = certificationAuthority;
+    }
+
+    public CertificationReport getReportType() {
+        return reportType;
+    }
+
+    public void setReportType(CertificationReport reportType) {
+        this.reportType = reportType;
+    }
+
+    public AuthenticationMethod getAuthMethod() {
+        return authMethod;
+    }
+
+    public void setAuthMethod(AuthenticationMethod authMethod) {
+        this.authMethod = authMethod;
+    }
+
+    public Citizen getCitizen() {
+        return citizen;
+    }
+
+    public void setCitizen(Citizen citizen) {
+        this.citizen = citizen;
     }
 }
