@@ -60,9 +60,13 @@ public class Citizen {
 
         if (affiliated != citizen.affiliated) return false;
         if (dni != null ? !dni.equals(citizen.dni) : citizen.dni != null) return false;
-        if (document != null ? !document.equals(citizen.document) : citizen.document != null) return false;
-        if (password != null ? !password.equals(citizen.password) : citizen.password != null) return false;
-        return telephoneNumber != null ? telephoneNumber.equals(citizen.telephoneNumber) : citizen.telephoneNumber == null;
+        if (document != null ? !document.equals(citizen.document) : citizen.document != null)
+            return false;
+        if (password != null ? !password.equals(citizen.password) : citizen.password != null)
+            return false;
+        return telephoneNumber != null
+                ? telephoneNumber.equals(citizen.telephoneNumber)
+                : citizen.telephoneNumber == null;
     }
 
     @Override

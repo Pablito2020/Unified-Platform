@@ -81,7 +81,8 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
                     }
 
                     @Override
-                    public EncryptedData sendCertfAuth(EncryptingKey pubKey) throws NotValidCertificateException, ConnectException {
+                    public EncryptedData sendCertfAuth(EncryptingKey pubKey)
+                            throws NotValidCertificateException, ConnectException {
                         throw new UnsupportedOperationException("Not supported by clave pin");
                     }
                 };
@@ -129,7 +130,8 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
                 () -> {
                     Calendar cal = Calendar.getInstance();
                     cal.set(2020, 3, 14);
-                    certificationAuthority.sendPIN(citizen.getDni().getNif(), new Date(cal.getTimeInMillis()));
+                    certificationAuthority.sendPIN(
+                            citizen.getDni().getNif(), new Date(cal.getTimeInMillis()));
                 });
     }
 
@@ -193,7 +195,8 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
                 () -> {
                     Calendar cal = Calendar.getInstance();
                     cal.set(2020, 3, 14);
-                    unifiedPlatform.enterNIFPINobt(citizen.getDni().getNif(), new Date(cal.getTimeInMillis()));
+                    unifiedPlatform.enterNIFPINobt(
+                            citizen.getDni().getNif(), new Date(cal.getTimeInMillis()));
                 });
     }
 
