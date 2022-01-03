@@ -8,10 +8,9 @@ public enum ClaveUserStatus {
     REGISTERED_NO_REINFORCED((byte) 1),
     REGISTERED_REINFORCED((byte) 2);
 
-
     private final byte value;
 
-    ClaveUserStatus(byte value){
+    ClaveUserStatus(byte value) {
         this.value = value;
     }
 

@@ -6,6 +6,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Objects;
 
 public class PDFDocument {
     static final String DEFAULT_PATH = "src/main/res/informe.pdf";
@@ -52,5 +53,18 @@ public class PDFDocument {
         if (path == null) throw new NullPointerException("Path can't be null");
         File toOpenFile = new File(path.getPath());
         Desktop.getDesktop().open(toOpenFile);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PDFDocument that = (PDFDocument) o;
+        return Objects.equals(creationDate, that.creationDate) && Objects.equals(path, that.path);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(creationDate, path, file);
     }
 }

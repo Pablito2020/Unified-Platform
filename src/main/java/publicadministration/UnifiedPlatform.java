@@ -59,27 +59,23 @@ public class UnifiedPlatform {
     public void enterNIFPINobt(Nif nif, Date valDate)
             throws NifNotRegisteredException, IncorrectValDateException,
             AnyMobileRegisteredException, ConnectException {
-        // TODO:  should this be instantiated here or on the tests?
-        // this.citizen = new Citizen(nif);
         this.citizen.setAffiliated(this.certificationAuthority.sendPIN(nif, valDate));
     }
 
     public void enterPIN(PINcode pin)
-            throws NotValidPINException, NotAffiliatedException, ConnectException {
-        if (!citizen.isAffiliated()) throw new NotAffiliatedException();
-        this.certificationAuthority.checkPIN(citizen.getNif(), pin);
+            throws NotValidPINException, NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException {
+        this.certificationAuthority.checkPIN(citizen.getDNI().getNif(), pin);
         PDFDocument document = getReport();
         citizen.setDocument(document);
-        throw new RuntimeException("TODO: Check return value!");
     }
 
-    private PDFDocument getReport() throws NotAffiliatedException, ConnectException {
+    private PDFDocument getReport() throws NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException {
         switch (reportType) {
             case LABORAL_LIFE_DOC -> {
-                return securitySocial.getLaboralLife(citizen.getNif());
+                return securitySocial.getLaboralLife(citizen.getDNI().getNif());
             }
             case MEMBER_ACCREDITATION_DOC -> {
-                return securitySocial.getMembAccred(citizen.getNif());
+                return securitySocial.getMembAccred(citizen.getDNI().getNif());
             }
             default -> throw new IllegalArgumentException("Unsupported report");
         }
@@ -87,7 +83,7 @@ public class UnifiedPlatform {
 
     public void enterCred(Nif nif, Password password)
             throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException,
-            ConnectException {
+            ConnectException, IncorrectValDateException {
         ClaveUserStatus claveOption = ClaveUserStatus.valueOf(this.certificationAuthority.checkCredentials(nif, password));
         if(claveOption == ClaveUserStatus.REGISTERED_REINFORCED)
             this.certificationAuthority.sendPIN(nif, citizen.getDNI().getValDate());
@@ -130,5 +126,45 @@ public class UnifiedPlatform {
     private void downloadDocument(DocPath path) throws BadPathException {
         System.out.println("Downloading Document");
         throw new UnsupportedOperationException("No implemented");
+    }
+
+    public SS getSecuritySocial() {
+        return securitySocial;
+    }
+
+    public void setSecuritySocial(SS securitySocial) {
+        this.securitySocial = securitySocial;
+    }
+
+    public CertificationAuthority getCertificationAuthority() {
+        return certificationAuthority;
+    }
+
+    public void setCertificationAuthority(CertificationAuthority certificationAuthority) {
+        this.certificationAuthority = certificationAuthority;
+    }
+
+    public CertificationReport getReportType() {
+        return reportType;
+    }
+
+    public void setReportType(CertificationReport reportType) {
+        this.reportType = reportType;
+    }
+
+    public AuthenticationMethod getAuthMethod() {
+        return authMethod;
+    }
+
+    public void setAuthMethod(AuthenticationMethod authMethod) {
+        this.authMethod = authMethod;
+    }
+
+    public Citizen getCitizen() {
+        return citizen;
+    }
+
+    public void setCitizen(Citizen citizen) {
+        this.citizen = citizen;
     }
 }
