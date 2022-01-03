@@ -1,5 +1,11 @@
 package publicadministration.interfaces;
 
+import exceptions.AnyMobileRegisteredException;
+import exceptions.IncorrectValDateException;
+import exceptions.NifNotRegisteredException;
+
+import java.net.ConnectException;
+
 public interface EnterNifPin {
 
     void enterNifPinBadNif();
@@ -8,5 +14,5 @@ public interface EnterNifPin {
 
     void enterNifPinBadMobile();
 
-    void correctNifPin();
+    void correctNifPin() throws IncorrectValDateException, NifNotRegisteredException, AnyMobileRegisteredException, ConnectException;
 }
