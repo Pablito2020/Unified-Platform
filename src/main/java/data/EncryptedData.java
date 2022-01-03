@@ -1,6 +1,6 @@
 package data;
 
-public class EncryptedData {
+public final class EncryptedData {
 
     private final byte[] data;
 

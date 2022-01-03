@@ -2,7 +2,7 @@ package data;
 
 import java.math.BigInteger;
 
-public class EncryptingKey {
+public final class EncryptingKey {
 
     private final BigInteger privateKey;
     private final BigInteger publicKey;
