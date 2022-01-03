@@ -11,8 +11,19 @@ public class AccreditationNumbTest {
 
     @Test
     public void goodTest() throws Exception {
-        AccreditationNumb numb = new AccreditationNumb("1234");
-        assertEquals("1234", numb.getNumber());
+        AccreditationNumb numb = new AccreditationNumb("123456789012");
+        assertEquals("123456789012", numb.getNumber());
+    }
+
+    @Test
+    public void badLengthNumbTest() {
+        Throwable ex =
+                Assertions.assertThrows(
+                        BadFormatAccreditationNumberException.class,
+                        () -> {
+                            new AccreditationNumb("1234");
+                        });
+        assertEquals("Accreditation number must have 12 digits", ex.getMessage());
     }
 
     @Test
@@ -21,9 +32,9 @@ public class AccreditationNumbTest {
                 Assertions.assertThrows(
                         BadFormatAccreditationNumberException.class,
                         () -> {
-                            new AccreditationNumb("123L");
+                            new AccreditationNumb("12312341234L");
                         });
-        assertEquals("only numbers are allowed.", ex.getMessage());
+        assertEquals("Accreditation number must have 12 digits", ex.getMessage());
     }
 
     @Test
