@@ -2,7 +2,6 @@ package publicadministration;
 
 import data.*;
 import enums.AuthenticationMethod;
-import enums.ClaveUserStatus;
 import exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,6 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
     AuthenticationMethod clavePIN;
     PINcode correctPin;
     UnifiedPlatform unifiedPlatform;
-    ClaveUserStatus registered;
 
     @BeforeEach
     public void createSS()
@@ -31,13 +29,14 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
         citizen =
                 new Citizen(new DNI(new Date(), new Nif("48059123C")), new Telephone("678546755"));
         correctPin = new PINcode("123");
-        registered = ClaveUserStatus.REGISTERED_REINFORCED;
 
         ss =
                 new SS() {
                     @Override
                     public LaboralLifeDoc getLaboralLife(Nif nif)
                             throws NotAffiliatedException, ConnectException {
+                        if (!citizen.getDNI().getNif().equals(nif) || !citizen.isAffiliated())
+                            throw new NotAffiliatedException();
                         return new LaboralLifeDoc(nif, new QuotePeriodsCollection());
                     }
 
@@ -45,6 +44,8 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
                     public MemberAccreditationDoc getMembAccred(Nif nif)
                             throws NotAffiliatedException, ConnectException,
                                     BadFormatAccreditationNumberException {
+                        if (!citizen.getDNI().getNif().equals(nif) || !citizen.isAffiliated())
+                            throw new NotAffiliatedException();
                         return new MemberAccreditationDoc(nif, new AccreditationNumb("1234"));
                     }
                 };
@@ -55,6 +56,8 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
                     public boolean sendPIN(Nif nif, Date date)
                             throws NifNotRegisteredException, IncorrectValDateException,
                                     AnyMobileRegisteredException, ConnectException {
+                        if (citizen.getTelephoneNumber() == null)
+                            throw new AnyMobileRegisteredException();
                         if (!citizen.getDNI().getNif().equals(nif))
                             throw new NifNotRegisteredException();
                         else if (!date.equals(citizen.getDNI().getValDate()))
@@ -65,8 +68,7 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
                     @Override
                     public boolean checkPIN(Nif nif, PINcode pin)
                             throws NotValidPINException, ConnectException {
-                        if (!citizen.getDNI().getNif().equals(nif)) throw new ConnectException();
-                        else if (!correctPin.equals(pin)) throw new NotValidPINException();
+                        if (!correctPin.equals(pin)) throw new NotValidPINException();
                         return true;
                     }
 
@@ -83,6 +85,53 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
         unifiedPlatform.setCertificationAuthority(certificationAuthority);
         unifiedPlatform.setSecuritySocial(ss);
         unifiedPlatform.setCitizen(citizen);
+    }
+
+    @Test
+    public void getLaboralLifeNotAffiliated()
+            throws BadFormatNifException, NotAffiliatedException, ConnectException {
+        assertThrows(
+                NotAffiliatedException.class,
+                () -> {
+                    PDFDocument laboralLife = ss.getLaboralLife(new Nif("45678909C"));
+                });
+    }
+
+    @Test
+    public void getMemberAccNotAffiliated()
+            throws BadFormatNifException, NotAffiliatedException, ConnectException {
+        assertThrows(
+                NotAffiliatedException.class,
+                () -> {
+                    PDFDocument laboralLife = ss.getMembAccred(new Nif("45678909C"));
+                });
+    }
+
+    @Test
+    public void sendPinIncorrectNif() {
+        assertThrows(
+                NifNotRegisteredException.class,
+                () -> {
+                    certificationAuthority.sendPIN(new Nif("43234563C"), new Date());
+                });
+    }
+
+    @Test
+    public void sendPinIncorrectDate() {
+        assertThrows(
+                IncorrectValDateException.class,
+                () -> {
+                    certificationAuthority.sendPIN(citizen.getDNI().getNif(), new Date());
+                });
+    }
+
+    @Test
+    public void checkPinBadPin() {
+        assertThrows(
+                NotValidPINException.class,
+                () -> {
+                    certificationAuthority.checkPIN(citizen.getDNI().getNif(), new PINcode("125"));
+                });
     }
 
     @Test
