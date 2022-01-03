@@ -5,6 +5,8 @@ import enums.CertificationReport;
 import exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import publicadministration.interfaces.EnterNifPin;
+import publicadministration.interfaces.EnterPin;
 import publicadministration.interfaces.UnifiedPlatformTest;
 import services.CertificationAuthority;
 import services.SS;
@@ -16,7 +18,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
+public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest, EnterNifPin, EnterPin {
 
     SS ss;
     CertificationAuthority certificationAuthority;

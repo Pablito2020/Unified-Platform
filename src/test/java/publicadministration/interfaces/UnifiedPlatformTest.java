@@ -42,17 +42,4 @@ public interface UnifiedPlatformTest {
         assertEquals(expectedOutput, outContent.toString());
     }
 
-    void enterNifPinBadNif();
-
-    void enterNifPinBadDate();
-
-    void enterNifPinBadMobile();
-
-    void correctNifPin();
-
-    void enterPinInvalidPin();
-
-    void getLaboralLifeNotAffiliated();
-
-    void getMemberAccNotAffiliated();
 }
