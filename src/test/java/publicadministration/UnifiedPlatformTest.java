@@ -12,8 +12,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public interface UnifiedPlatformTest {
 
     @Test
-    default void enterKeyWordTest() {
-        throw new RuntimeException("TODO");
+    default void enterKeyWordTestLaboralLife() throws AnyKeyWordProcedureException {
+        UnifiedPlatform unifiedPlatform = new UnifiedPlatform();
+        PrintStream outStream = System.out;
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        unifiedPlatform.enterKeyWords("Laboral Life Doc");
+        assertEquals("SS\n", outContent.toString());
+        System.setOut(outStream);
+    }
+
+    @Test
+    default void enterKeyWordTestMemberAcc() throws AnyKeyWordProcedureException {
+        UnifiedPlatform unifiedPlatform = new UnifiedPlatform();
+        PrintStream outStream = System.out;
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        unifiedPlatform.enterKeyWords("Member Accreditation Doc");
+        assertEquals("SS\n", outContent.toString());
+        System.setOut(outStream);
     }
 
     @Test
@@ -42,7 +59,7 @@ public interface UnifiedPlatformTest {
             throws IncorrectValDateException, NifNotRegisteredException,
                     AnyMobileRegisteredException, ConnectException;
 
-    public void enterPinTest()
+    void enterPinTest()
             throws NotValidPINException, NotAffiliatedException, ConnectException,
                     IncorrectValDateException, NifNotRegisteredException,
                     AnyMobileRegisteredException;
