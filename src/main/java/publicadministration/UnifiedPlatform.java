@@ -40,7 +40,6 @@ public class UnifiedPlatform {
     public void enterKeyWords(String keyWord) throws AnyKeyWordProcedureException {
         String action = searchKeyWords(keyWord);
         System.out.println(action);
-        // this.securitySocial = Procedures.valueOf(action).getInstance();
     }
 
     public void selectSS() {
@@ -69,7 +68,7 @@ public class UnifiedPlatform {
     public void enterNIFPINobt(Nif nif, Date valDate)
             throws NifNotRegisteredException, IncorrectValDateException,
             AnyMobileRegisteredException, ConnectException {
-        this.citizen.setAffiliated(this.certificationAuthority.sendPIN(nif, valDate));
+        this.certificationAuthority.sendPIN(nif, valDate);
     }
 
     public void enterPIN(PINcode pin) throws NotValidPINException, NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException {
@@ -167,8 +166,7 @@ public class UnifiedPlatform {
     public void setSecuritySocial(SS securitySocial) {
         this.securitySocial = securitySocial;
     }
-
-    public CertificationAuthority getCertificationAuthority() {
+public CertificationAuthority getCertificationAuthority() {
         return certificationAuthority;
     }
 

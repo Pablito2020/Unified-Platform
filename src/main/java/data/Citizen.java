@@ -4,7 +4,7 @@ import publicadministration.PDFDocument;
 
 public class Citizen {
 
-    private final DNI dni;
+    private DNI dni;
     private boolean affiliated;
     private PDFDocument document;
     private Password password;
