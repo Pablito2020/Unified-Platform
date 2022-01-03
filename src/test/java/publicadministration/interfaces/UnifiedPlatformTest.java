@@ -1,5 +1,8 @@
 package publicadministration.interfaces;
 
+import exceptions.AnyMobileRegisteredException;
+import exceptions.IncorrectValDateException;
+import exceptions.NifNotRegisteredException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,6 +10,7 @@ import publicadministration.UnifiedPlatform;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.net.ConnectException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -48,7 +52,7 @@ public interface UnifiedPlatformTest {
 
     void enterNifPinBadMobile();
 
-    void correctNifPin();
+    void correctNifPin() throws IncorrectValDateException, NifNotRegisteredException, AnyMobileRegisteredException, ConnectException;
 
     void enterPinInvalidPin();
 

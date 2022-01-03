@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class UnifiedPlatform {
 
-    private EncryptingKey keys;
+    private final EncryptingKey keys;
     private SS securitySocial;
     private CertificationAuthority certificationAuthority;
     private CertificationReport reportType;
@@ -68,11 +68,13 @@ public class UnifiedPlatform {
     public void enterNIFPINobt(Nif nif, Date valDate)
             throws NifNotRegisteredException, IncorrectValDateException,
             AnyMobileRegisteredException, ConnectException {
-        this.certificationAuthority.sendPIN(nif, valDate);
+        if(this.certificationAuthority.sendPIN(nif, valDate))
+            System.out.println("PIN has been sent correctly");
     }
 
     public void enterPIN(PINcode pin) throws NotValidPINException, NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException {
-        this.certificationAuthority.checkPIN(citizen.getDni().getNif(), pin);
+        if(this.certificationAuthority.checkPIN(citizen.getDni().getNif(), pin))
+            System.out.println("PIN checked correctly");
         PDFDocument document = getReport();
         citizen.setDocument(document);
     }

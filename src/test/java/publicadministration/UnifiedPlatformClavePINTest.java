@@ -3,17 +3,19 @@ package publicadministration;
 import data.*;
 import enums.CertificationReport;
 import exceptions.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import publicadministration.interfaces.UnifiedPlatformTest;
 import services.CertificationAuthority;
 import services.SS;
 
+import java.io.PrintStream;
 import java.net.ConnectException;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
@@ -27,11 +29,18 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
     @BeforeEach
     public void setUp()
             throws BadFormatNifException, BadFormatPinException, InvalidTelephoneFormat {
+        System.setOut(new PrintStream(outContent));
         correctPin = new PINcode("123");
         initializeCitizen();
         initializeSecuritySocial();
         initializeAuthority();
         initializeUnifiedPlatform();
+    }
+
+    @AfterEach
+    public void closeOut() {
+        outContent.reset();
+        System.setOut(outStream);
     }
 
     private void initializeSecuritySocial() {
@@ -61,7 +70,6 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
                     public boolean sendPIN(Nif nif, Date date)
                             throws NifNotRegisteredException, IncorrectValDateException,
                                     AnyMobileRegisteredException, ConnectException {
-                        System.out.println("Nif: " + nif.getNif() + "mine: " + citizen.getDni().getNif());
                         if (!citizen.getDni().getNif().equals(nif))
                             throw new NifNotRegisteredException();
                         else if (!date.equals(citizen.getDni().getValDate()))
@@ -138,14 +146,23 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
     }
 
     @Test
-    public void correctNifPin() {
-        assertDoesNotThrow(
-                () ->
-                        unifiedPlatform.enterNIFPINobt(
-                                citizen.getDni().getNif(), citizen.getDni().getValDate()));
+    public void correctNifPin()
+            throws IncorrectValDateException, NifNotRegisteredException,
+                    AnyMobileRegisteredException, ConnectException {
+        unifiedPlatform.enterNIFPINobt(citizen.getDni().getNif(), citizen.getDni().getValDate());
+        assertEquals("PIN has been sent correctly\n", outContent.toString());
     }
 
     //  enterPIN methods
+
+    @Test
+    public void correctEnterPin()
+            throws BadFormatPinException, NotValidPINException, NotAffiliatedException,
+                    BadFormatAccreditationNumberException, ConnectException {
+        unifiedPlatform.setReportType(CertificationReport.LABORAL_LIFE_DOC);
+        unifiedPlatform.enterPIN(new PINcode("123"));
+        assertEquals("PIN checked correctly\n", outContent.toString());
+    }
 
     @Test
     public void enterPinInvalidPin() {
@@ -177,5 +194,4 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
                     unifiedPlatform.enterPIN(correctPin);
                 });
     }
-
 }
