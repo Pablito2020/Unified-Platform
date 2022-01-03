@@ -3,7 +3,6 @@ package publicadministration;
 import data.AccreditationNumb;
 import data.Nif;
 
-
 public class MemberAccreditationDoc extends PDFDocument {
 
     // Represents the member accreditation document
