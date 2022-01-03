@@ -13,8 +13,6 @@ public class MemberAccreditationDoc extends PDFDocument {
 
     // Initialize attributes
     public MemberAccreditationDoc(Nif nif, AccreditationNumb affiliationNumber) {
-        Objects.requireNonNull(nif, "Nif can't be null");
-        Objects.requireNonNull(affiliationNumber, "Affiliation Number can't be null");
         this.nif = nif;
         this.affiliationNumber = affiliationNumber;
     }
