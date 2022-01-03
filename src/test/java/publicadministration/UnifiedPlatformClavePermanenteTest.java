@@ -4,45 +4,35 @@ import data.*;
 import enums.CertificationReport;
 import enums.ClaveUserStatus;
 import exceptions.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import publicadministration.interfaces.EnterNifPin;
-import publicadministration.interfaces.EnterPin;
 import publicadministration.interfaces.UnifiedPlatformTest;
 import services.CertificationAuthority;
 import services.SS;
 
-import java.io.PrintStream;
 import java.net.ConnectException;
-import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest, EnterNifPin, EnterPin {
-
+public class UnifiedPlatformClavePermanenteTest implements UnifiedPlatformTest {
     SS ss;
     CertificationAuthority certificationAuthority;
     Citizen citizen;
     PINcode correctPin;
     UnifiedPlatform unifiedPlatform;
+    CertificationReport reportType;
 
     @BeforeEach
     public void setUp()
-            throws BadFormatNifException, BadFormatPinException, InvalidTelephoneFormat {
-        System.setOut(new PrintStream(outContent));
+            throws BadFormatNifException, BadFormatPinException, InvalidTelephoneFormat,
+                    BadFormatPasswordException {
         correctPin = new PINcode("123");
         initializeCitizen();
         initializeSecuritySocial();
         initializeAuthority();
         initializeUnifiedPlatform();
-    }
-
-    @AfterEach
-    public void closeOut() {
-        System.setOut(outStream);
     }
 
     private void initializeSecuritySocial() {
@@ -89,8 +79,17 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest, EnterNi
                     }
 
                     @Override
-                    public ClaveUserStatus checkCredentials(Nif nif, Password password) {
-                        throw new UnsupportedOperationException("Not supported by clave pin");
+                    public ClaveUserStatus checkCredentials(Nif nif, Password password)
+                            throws NotValidCredException, NifNotRegisteredException,
+                                    AnyMobileRegisteredException {
+                        if (!citizen.getPassword().equals(password))
+                            throw new NotValidCredException();
+                        if (!citizen.getDni().getNif().equals(nif))
+                            throw new NifNotRegisteredException();
+                        if (citizen.getTelephoneNumber() == null)
+                            throw new AnyMobileRegisteredException();
+                        System.out.println("Credentials are OK!");
+                        return citizen.getClaveUserStatus();
                     }
 
                     @Override
@@ -105,69 +104,64 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest, EnterNi
         unifiedPlatform.setCertificationAuthority(certificationAuthority);
         unifiedPlatform.setSecuritySocial(ss);
         unifiedPlatform.setCitizen(citizen);
+        unifiedPlatform.setReportType(CertificationReport.LABORAL_LIFE_DOC);
     }
 
-    private void initializeCitizen() throws InvalidTelephoneFormat, BadFormatNifException {
+    private void initializeCitizen()
+            throws InvalidTelephoneFormat, BadFormatNifException, BadFormatPasswordException {
         citizen =
                 new Citizen(new DNI(new Date(), new Nif("48059123C")), new Telephone("678546755"));
         citizen.setAffiliated(true);
+        citizen.setPassword(new Password("fakepassword"));
+        citizen.setClaveUserStatus(ClaveUserStatus.REGISTERED_REINFORCED);
     }
 
-    // enterNIFPin method
-
     @Test
-    public void enterNifPinBadNif() {
+    public void enterNifPasswdBadNif() {
         assertThrows(
                 NifNotRegisteredException.class,
-                () -> {
-                    unifiedPlatform.enterNIFPINobt(new Nif("99999999C"), new Date());
-                });
+                () -> unifiedPlatform.enterCred(new Nif("99999999C"), citizen.getPassword()));
     }
 
     @Test
-    public void enterNifPinBadDate() {
+    public void enterNifPasswdBadPasswd() {
         assertThrows(
-                IncorrectValDateException.class,
-                () -> {
-                    Calendar cal = Calendar.getInstance();
-                    cal.set(2020, 3, 14);
-                    unifiedPlatform.enterNIFPINobt(
-                            citizen.getDni().getNif(), new Date(cal.getTimeInMillis()));
-                });
+                NotValidCredException.class,
+                () ->
+                        unifiedPlatform.enterCred(
+                                citizen.getDni().getNif(), new Password("wrongpasswd")));
     }
 
     @Test
-    public void enterNifPinBadMobile() {
+    public void enterNifPasswdBadMobile() {
         citizen.setTelephoneNumber(null);
         assertThrows(
                 AnyMobileRegisteredException.class,
-                () -> {
-                    unifiedPlatform.enterNIFPINobt(
-                            citizen.getDni().getNif(), citizen.getDni().getValDate());
-                });
+                () ->
+                        unifiedPlatform.enterCred(
+                                citizen.getDni().getNif(), new Password("fakepassword")));
     }
 
     @Test
-    public void correctNifPin()
-            throws
-            ConnectException, IncorrectValDateException, NifNotRegisteredException, AnyMobileRegisteredException {
-        unifiedPlatform.enterNIFPINobt(citizen.getDni().getNif(), citizen.getDni().getValDate());
-        assertEquals("PIN has been sent correctly\n", outContent.toString());
-    }
+    public void correctNifPasswd()
+            throws BadFormatNifException, BadFormatPasswordException, NotValidCredException,
+                    NotAffiliatedException, IncorrectValDateException,
+                    BadFormatAccreditationNumberException, NifNotRegisteredException,
+                    AnyMobileRegisteredException, ConnectException {
 
-    //  enterPIN methods
-
-    @Test
-    public void correctEnterPin()
-            throws BadFormatPinException, NotValidPINException, NotAffiliatedException,
-                    BadFormatAccreditationNumberException, ConnectException {
-        unifiedPlatform.setReportType(CertificationReport.LABORAL_LIFE_DOC);
-        unifiedPlatform.enterPIN(new PINcode("123"));
-        assertEquals("PIN checked correctly\n", outContent.toString());
+        citizen.setClaveUserStatus(ClaveUserStatus.REGISTERED_REINFORCED);
+        unifiedPlatform.setReportType(CertificationReport.MEMBER_ACCREDITATION_DOC);
+        unifiedPlatform.enterCred(new Nif("48059123C"), new Password("fakepassword"));
+        assertEquals("Credentials are OK!\n", outContent.toString());
     }
 
     @Test
-    public void enterPinInvalidPin() {
+    public void registeredReinforcedInvalidPin()
+            throws NotValidCredException, IncorrectValDateException, NifNotRegisteredException,
+                    AnyMobileRegisteredException, ConnectException, NotAffiliatedException,
+                    BadFormatAccreditationNumberException {
+        citizen.setClaveUserStatus(ClaveUserStatus.REGISTERED_REINFORCED);
+        unifiedPlatform.enterCred(citizen.getDni().getNif(), citizen.getPassword());
         assertThrows(
                 NotValidPINException.class,
                 () -> {
@@ -176,24 +170,31 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest, EnterNi
     }
 
     @Test
+    public void notRegisteredClavePermanente(){
+        citizen.setClaveUserStatus(ClaveUserStatus.NOT_REGISTERD);
+        assertThrows(
+                NifNotRegisteredException.class,
+                () -> unifiedPlatform.enterCred(citizen.getDni().getNif(), citizen.getPassword())
+        );
+    }
+
+    @Test
     public void getLaboralLifeNotAffiliated() {
         citizen.setAffiliated(false);
+        citizen.setClaveUserStatus(ClaveUserStatus.REGISTERED_NO_REINFORCED);
         unifiedPlatform.setReportType(CertificationReport.LABORAL_LIFE_DOC);
         assertThrows(
                 NotAffiliatedException.class,
-                () -> {
-                    unifiedPlatform.enterPIN(correctPin);
-                });
+                () -> unifiedPlatform.enterCred(citizen.getDni().getNif(), citizen.getPassword()));
     }
 
     @Test
     public void getMemberAccNotAffiliated() {
         citizen.setAffiliated(false);
+        citizen.setClaveUserStatus(ClaveUserStatus.REGISTERED_NO_REINFORCED);
         unifiedPlatform.setReportType(CertificationReport.MEMBER_ACCREDITATION_DOC);
         assertThrows(
                 NotAffiliatedException.class,
-                () -> {
-                    unifiedPlatform.enterPIN(correctPin);
-                });
+                () -> unifiedPlatform.enterCred(citizen.getDni().getNif(), citizen.getPassword()));
     }
 }

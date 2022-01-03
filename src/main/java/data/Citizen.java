@@ -1,5 +1,6 @@
 package data;
 
+import enums.ClaveUserStatus;
 import publicadministration.PDFDocument;
 
 public class Citizen {
@@ -9,6 +10,7 @@ public class Citizen {
     private PDFDocument document;
     private Password password;
     private Telephone telephoneNumber;
+    private ClaveUserStatus claveUserStatus;
 
     public Citizen(DNI dni, Telephone telephoneNumber) {
         this.dni = dni;
@@ -49,6 +51,14 @@ public class Citizen {
 
     public void setPassword(Password password) {
         this.password = password;
+    }
+
+    public void setClaveUserStatus(ClaveUserStatus claveUserStatus){
+        this.claveUserStatus = claveUserStatus;
+    }
+
+    public ClaveUserStatus getClaveUserStatus(){
+        return this.claveUserStatus;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package services;
 
 import data.*;
+import enums.ClaveUserStatus;
 import exceptions.*;
 
 import java.net.ConnectException;
@@ -13,7 +14,7 @@ public interface CertificationAuthority {
 
     boolean checkPIN(Nif nif, PINcode pin) throws NotValidPINException, ConnectException;
 
-    byte checkCredentials(Nif nif, Password password)
+    ClaveUserStatus checkCredentials(Nif nif, Password password)
             throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException,
                     ConnectException;
 

@@ -92,12 +92,15 @@ public class UnifiedPlatform {
     }
 
     public void enterCred(Nif nif, Password password)
-            throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException, ConnectException, IncorrectValDateException {
-        ClaveUserStatus claveOption =
-                ClaveUserStatus.valueOf(
-                        this.certificationAuthority.checkCredentials(nif, password));
-        if (claveOption == ClaveUserStatus.REGISTERED_REINFORCED)
+            throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException, ConnectException, IncorrectValDateException, NotAffiliatedException, BadFormatAccreditationNumberException {
+        ClaveUserStatus claveOption = this.certificationAuthority.checkCredentials(nif, password);
+        if (claveOption == ClaveUserStatus.REGISTERED_REINFORCED){
             this.certificationAuthority.sendPIN(nif, citizen.getDni().getValDate());
+        }else if(claveOption == ClaveUserStatus.NOT_REGISTERD){
+            throw new NifNotRegisteredException();
+        }else if(claveOption == ClaveUserStatus.REGISTERED_NO_REINFORCED){
+            citizen.setDocument(getReport());
+        }
     }
 
     private void printDocument() throws BadPathException, PrintingException {
