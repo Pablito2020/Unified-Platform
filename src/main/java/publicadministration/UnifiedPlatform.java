@@ -40,8 +40,6 @@ public class UnifiedPlatform {
     public void enterKeyWords(String keyWord) throws AnyKeyWordProcedureException {
         String action = searchKeyWords(keyWord);
         System.out.println(action);
-        // TODO: This needs to instantiate a SS instance, but how? We need an anonymous class or
-        // something!
         // this.securitySocial = Procedures.valueOf(action).getInstance();
     }
 
@@ -70,22 +68,30 @@ public class UnifiedPlatform {
 
     public void enterNIFPINobt(Nif nif, Date valDate)
             throws NifNotRegisteredException, IncorrectValDateException,
-                    AnyMobileRegisteredException, ConnectException {
+            AnyMobileRegisteredException, ConnectException {
         this.citizen.setAffiliated(this.certificationAuthority.sendPIN(nif, valDate));
-        if (citizen.getTelephoneNumber() == null) throw new AnyMobileRegisteredException();
     }
 
-    public void enterPIN(PINcode pin)
-            throws NotValidPINException, NotAffiliatedException, ConnectException {
-        if (!citizen.isAffiliated()) throw new NotAffiliatedException();
+    public void enterPIN(PINcode pin) throws NotValidPINException, NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException {
         this.certificationAuthority.checkPIN(citizen.getDni().getNif(), pin);
-        // TODO: Check which document we need to use
-        citizen.setDocument(securitySocial.getLaboralLife(citizen.getDni().getNif()));
+        PDFDocument document = getReport();
+        citizen.setDocument(document);
+    }
+
+    private PDFDocument getReport() throws NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException {
+        switch (reportType) {
+            case LABORAL_LIFE_DOC -> {
+                return securitySocial.getLaboralLife(citizen.getDni().getNif());
+            }
+            case MEMBER_ACCREDITATION_DOC -> {
+                return securitySocial.getMembAccred(citizen.getDni().getNif());
+            }
+            default -> throw new IllegalArgumentException("Unsupported report");
+        }
     }
 
     public void enterCred(Nif nif, Password password)
-            throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException,
-                    ConnectException, IncorrectValDateException {
+            throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException, ConnectException, IncorrectValDateException {
         ClaveUserStatus claveOption =
                 ClaveUserStatus.valueOf(
                         this.certificationAuthority.checkCredentials(nif, password));

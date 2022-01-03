@@ -62,7 +62,7 @@ public interface UnifiedPlatformTest {
     void enterPinTest()
             throws NotValidPINException, NotAffiliatedException, ConnectException,
                     IncorrectValDateException, NifNotRegisteredException,
-                    AnyMobileRegisteredException;
+                    AnyMobileRegisteredException, BadFormatAccreditationNumberException;
 
     void enterBadNifNIFPINObtTest();
 
