@@ -3,7 +3,6 @@ package publicadministration;
 import data.AccreditationNumb;
 import data.Nif;
 
-import java.util.Objects;
 
 public class MemberAccreditationDoc extends PDFDocument {
 
