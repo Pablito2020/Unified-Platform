@@ -9,6 +9,7 @@ import services.CertificationAuthority;
 import services.SS;
 
 import java.net.ConnectException;
+import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,7 +36,7 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
                     @Override
                     public LaboralLifeDoc getLaboralLife(Nif nif)
                             throws NotAffiliatedException, ConnectException {
-                        if (!citizen.getDNI().getNif().equals(nif) || !citizen.isAffiliated())
+                        if (!citizen.getDni().getNif().equals(nif) || !citizen.isAffiliated())
                             throw new NotAffiliatedException();
                         return new LaboralLifeDoc(nif, new QuotePeriodsCollection());
                     }
@@ -44,7 +45,7 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
                     public MemberAccreditationDoc getMembAccred(Nif nif)
                             throws NotAffiliatedException, ConnectException,
                                     BadFormatAccreditationNumberException {
-                        if (!citizen.getDNI().getNif().equals(nif) || !citizen.isAffiliated())
+                        if (!citizen.getDni().getNif().equals(nif) || !citizen.isAffiliated())
                             throw new NotAffiliatedException();
                         return new MemberAccreditationDoc(nif, new AccreditationNumb("1234"));
                     }
@@ -58,9 +59,9 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
                                     AnyMobileRegisteredException, ConnectException {
                         if (citizen.getTelephoneNumber() == null)
                             throw new AnyMobileRegisteredException();
-                        if (!citizen.getDNI().getNif().equals(nif))
+                        if (!citizen.getDni().getNif().equals(nif))
                             throw new NifNotRegisteredException();
-                        else if (!date.equals(citizen.getDNI().getValDate()))
+                        else if (!date.equals(citizen.getDni().getValDate()))
                             throw new IncorrectValDateException();
                         return true;
                     }
@@ -76,6 +77,11 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
                     public byte checkCredentials(Nif nif, Password password)
                             throws NifNotRegisteredException, NotValidCredException,
                                     AnyMobileRegisteredException, ConnectException {
+                        throw new UnsupportedOperationException("Not supported by clave pin");
+                    }
+
+                    @Override
+                    public EncryptedData sendCertfAuth(EncryptingKey pubKey) throws NotValidCertificateException, ConnectException {
                         throw new UnsupportedOperationException("Not supported by clave pin");
                     }
                 };
@@ -121,7 +127,9 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
         assertThrows(
                 IncorrectValDateException.class,
                 () -> {
-                    certificationAuthority.sendPIN(citizen.getDNI().getNif(), new Date());
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(2020, 3, 14);
+                    certificationAuthority.sendPIN(citizen.getDni().getNif(), new Date(cal.getTimeInMillis()));
                 });
     }
 
@@ -130,7 +138,7 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
         assertThrows(
                 NotValidPINException.class,
                 () -> {
-                    certificationAuthority.checkPIN(citizen.getDNI().getNif(), new PINcode("125"));
+                    certificationAuthority.checkPIN(citizen.getDni().getNif(), new PINcode("125"));
                 });
     }
 
@@ -139,12 +147,12 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
             throws NotValidPINException, NotAffiliatedException, ConnectException,
                     IncorrectValDateException, NifNotRegisteredException,
                     AnyMobileRegisteredException {
-        unifiedPlatform.enterNIFPINobt(citizen.getDNI().getNif(), citizen.getDNI().getValDate());
+        unifiedPlatform.enterNIFPINobt(citizen.getDni().getNif(), citizen.getDni().getValDate());
         unifiedPlatform.setSecuritySocial(ss);
         unifiedPlatform.enterPIN(correctPin);
         assertEquals(
                 unifiedPlatform.getCitizen().getDocument().toString(),
-                new LaboralLifeDoc(citizen.getDNI().getNif(), new QuotePeriodsCollection())
+                new LaboralLifeDoc(citizen.getDni().getNif(), new QuotePeriodsCollection())
                         .toString());
     }
 
@@ -152,20 +160,20 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
     public void enterNIFPINObtTest()
             throws IncorrectValDateException, NifNotRegisteredException,
                     AnyMobileRegisteredException, ConnectException {
-        unifiedPlatform.enterNIFPINobt(citizen.getDNI().getNif(), citizen.getDNI().getValDate());
-        assertEquals(unifiedPlatform.getCitizen().getDNI(), citizen.getDNI());
+        unifiedPlatform.enterNIFPINobt(citizen.getDni().getNif(), citizen.getDni().getValDate());
+        assertEquals(unifiedPlatform.getCitizen().getDni(), citizen.getDni());
         assertTrue(unifiedPlatform.getCitizen().isAffiliated());
     }
 
     @Test
     public void enterNotRegisteredMobileNIFPInObtTest() {
-        Citizen newCitizen = new Citizen(citizen.getDNI(), null);
+        Citizen newCitizen = new Citizen(citizen.getDni(), null);
         unifiedPlatform.setCitizen(newCitizen);
         assertThrows(
                 AnyMobileRegisteredException.class,
                 () -> {
                     unifiedPlatform.enterNIFPINobt(
-                            citizen.getDNI().getNif(), citizen.getDNI().getValDate());
+                            citizen.getDni().getNif(), citizen.getDni().getValDate());
                 });
     }
 
@@ -183,7 +191,9 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest {
         assertThrows(
                 IncorrectValDateException.class,
                 () -> {
-                    unifiedPlatform.enterNIFPINobt(citizen.getDNI().getNif(), new Date());
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(2020, 3, 14);
+                    unifiedPlatform.enterNIFPINobt(citizen.getDni().getNif(), new Date(cal.getTimeInMillis()));
                 });
     }
 
