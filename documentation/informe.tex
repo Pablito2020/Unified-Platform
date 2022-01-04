@@ -1,0 +1,99 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage{graphicx} % needed for images
+\usepackage[export]{adjustbox} % needed for adjustable images
+\usepackage{flafter} % needed for figures
+\usepackage{hyperref} % needed for a clickable table of contents
+% \usepackage{cleveref}
+\usepackage{polyglossia} % needed for catalan support
+\usepackage{subfiles} % needed for a subfile structure
+\usepackage[table]{xcolor}
+\usepackage{fancyhdr} % needed for fancy header 
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage{lineno}
+\usepackage{subfig}
+
+\setmainlanguage{catalan}
+\graphicspath{ {images/} }
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Enginyeria del Programari}
+\fancyhead[RE,LO]{Pràctica 4: Proves Unitàries}
+\fancyfoot[LE,RO]{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+% information
+\title{%
+    \begin{center}
+	\includegraphics[width=4cm,height=3cm]{udl.png}
+    \end{center}
+    \line(1,0){250}\\[0.3cm]
+    \textbf{Pràctica 4: Proves Unitàries}
+    \line(1,0){250}
+    \\[0.5cm]
+	\large Enginyeria del Programari - Grau en Enginyeria Informàtica
+}
+\author{Oscar Salcedo Heredia, Pablo Fraile Alonso i Roger Fontova Torres}
+\date{\today}
+
+% document
+\begin{document}
+    
+% title
+\maketitle
+\thispagestyle{empty}
+\newpage
+\tableofcontents
+% \listoffigures
+% \listoftables
+\newpage
+
+% begin contents
+
+\section{Introducció}
+\label{introduction}
+En aquesta pràctica s'ha plantejat la implementació d'una versió simplificada del cas d'ús  \textit{Obtenir Certificació} del Portal Unificat amb els respectius tests. \\
+
+Les classes funcionals s'han dividit en cinc \textit{packages}: \textit{data}, \textit{enums}, \textit{exceptions}, \textit{publicadministration}, \textit{services}. \\
+
+Les classes de testing s'han dividit en tres \textit{packages} diferents: \textit{data}, \textit{enums} i \textit{publicadministration}.
+
+
+\section{Presa de decissions de disseny}
+\label{decissisions}
+En aquest apartat s'explicaràn les decissions preses durant la implementació del projecte, és a dir, la utilització d'enumeracions i interfícies.
+
+\subsection{Utilització d'enumeracions}
+\label{enumeracions}
+S'han utilitzat enumeracions per tenir en una classe les diferents opcions dels mètodes d'autenticació, del certificat digital, de l'estat de la Cl@ve Permanente, etc.
+
+\subsection{Utilització d'interfícies}
+\label{interfaces}
+S'ha utilitzat el principi SOLID \textit{Interface Segregation Principle} per forçar la implementació dels tests comuns en les classes de testing Cl@ave PIN, Cl@ve Permanente i Certificat Digital. \\
+
+S'han creat tres interfícies per als tests mencionats anteriorment:
+\begin{itemize}
+  \item \textbf{EnterNifPin:} Conté mètodes que testegen C
+  \item \textbf{EnterPin:}
+  \item \textbf{UnifiedPlatformTest:}
+\end{itemize}
+
+
+\subsection{Classe Citizen}
+\label{citizen}
+S'ha requerit la classe Citizen per emmagatzemar les dades necessaries d'un usuari de la plataforma.
+
+\subsection{Classe DNI}
+\label{dni}
+S'ha requerit la classe DNI per guardar en un mateix objecte el NIF i la data de validació d'aquest.
+
+\subsection{EncryptedData}
+\label{encyptedData}
+
+
+\end{document}
