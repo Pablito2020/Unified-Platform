@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public enum ClaveUserStatus {
-    NOT_REGISTERD((byte) 0),
+    NOT_REGISTERED((byte) 0),
     REGISTERED_NO_REINFORCED((byte) 1),
     REGISTERED_REINFORCED((byte) 2);
 

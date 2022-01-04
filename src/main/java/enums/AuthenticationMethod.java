@@ -27,6 +27,10 @@ public enum AuthenticationMethod {
         throw new IllegalArgumentException(value + " isn't an AuthenticationMethod");
     }
 
+    public byte getByte() {
+        return value;
+    }
+
     @Override
     public String toString() {
         return "Authentication Method: " + name() + " has byte value: " + value;

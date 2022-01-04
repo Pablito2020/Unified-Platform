@@ -3,6 +3,7 @@ package enums;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DigitalCertificateTest {
 
@@ -20,5 +21,12 @@ public class DigitalCertificateTest {
     @Test
     public void getFNMT() {
         assertEquals(DigitalCertificate.valueOf((byte) 1), DigitalCertificate.FNMT);
+    }
+
+    @Test
+    public void invalidCertificateTest() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> DigitalCertificate.valueOf((byte) -1));
     }
 }

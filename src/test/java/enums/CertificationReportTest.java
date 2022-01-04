@@ -3,6 +3,7 @@ package enums;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CertificationReportTest {
 
@@ -23,5 +24,12 @@ public class CertificationReportTest {
         assertEquals(
                 CertificationReport.valueOf((byte) 1),
                 CertificationReport.MEMBER_ACCREDITATION_DOC);
+    }
+
+    @Test
+    public void invalidCertification() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> CertificationReport.valueOf((byte) -1));
     }
 }

@@ -26,6 +26,10 @@ public enum DigitalCertificate {
         throw new IllegalArgumentException(value + " unsupported byte");
     }
 
+    public byte getByte() {
+        return value;
+    }
+
     @Override
     public String toString() {
         return "DigitalCertificate " + +value + " ";
