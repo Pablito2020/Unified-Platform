@@ -19,7 +19,7 @@ public class PDFDocumentTest {
     }
 
     @Test
-    public void getPathTest() {
+    public void getDefaultPathTest() {
         DocPath path = new DocPath("src/main/res/informe.pdf");
         assertEquals(path, document.getPath());
     }
@@ -29,6 +29,7 @@ public class PDFDocumentTest {
         DocPath newPath = new DocPath("src/main/informe.pdf");
         document.moveDoc(newPath);
         assertEquals(newPath, document.getPath());
+        assertEquals(newPath.getPath(), document.getFile().getPath());
         // PDF has to be moved back to the default path
         newPath = new DocPath(PDFDocument.DEFAULT_PATH);
         document.moveDoc(newPath);

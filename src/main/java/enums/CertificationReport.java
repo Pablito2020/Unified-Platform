@@ -26,6 +26,10 @@ public enum CertificationReport {
         throw new IllegalArgumentException(value + " isn't a Report Byte Value");
     }
 
+    public byte getByte() {
+        return value;
+    }
+
     @Override
     public String toString() {
         return "Report: " + name() + " has byte: " + this.value;

@@ -1,14 +1,19 @@
 #+TITLE: Unified Platform Project 📔
 #+AUTHOR: Pablo Fraile Alonso, Roger Fontova Torres and Oscar Salcedo Heredia
 
+[[https://github.com/Pablito2020/Unified-Platform/actions/workflows/maven.yml][https://github.com/Pablito2020/Unified-Platform/actions/workflows/maven.yml/badge.svg]]
+[[https://github.com/Pablito2020/Unified-Platform/actions/workflows/javaformat.yml][https://github.com/Pablito2020/Unified-Platform/actions/workflows/javaformat.yml/badge.svg]]
+
+
 * Execute Tests 🧪:
-You can run the tests with IntelliJ or with maven.
+You can run the tests with IntelliJ or maven.
 
 ** With IntelliJ:
-Go to the src/test/java package, right click and select the "execute tests" option.
+Go to the src/test/java package, right click on it and select the "execute tests" option.
 
 ** With Maven:
-Make sure that you have the Java Path exported. The JDK version should be 17. In case you have to configure it in linux you can do:
+Make sure that you have the Java Home Path exported. The JDK version should be 17 (in our case, we are using the OpenJDK one).
+In case you have to configure it on linux you can do:
 
 #+BEGIN_SRC sh
     $ export JAVA_HOME=/usr/lib/jvm/java-17-openjdk/
@@ -20,8 +25,12 @@ After that, go to the root of the project and execute:
 #+END_SRC
 
 
-
 * Contributing 💬:
-Before contributing, see the [[https://github.com/Pablito2020/Unified-Platform/issues][issues]] page for knowing which changes/improvements can be made to the project. After you choose the problem you want to fix, you have to assign yourself to the issue.
+Before contributing, see the [[https://github.com/Pablito2020/Unified-Platform/issues][issues]] page for knowing which changes/improvements can be made to the project. After you've choosen the problem you want to fix, you have to assign yourself to the issue.
 
-After that, create a new branch with your name (for example: pablo), and then commit to it. After all the changes are done, you can nominate to all the members inside the issue and then they will give you the okay to merge your branch to develop.
+After that, create a new branch with your name (for example: pablo), and then commit to it. After all the changes are done, you can nominate all the project members inside the issue and then, if everything goes fine, you will merge your branch with develop.
+
+
+* Knowing issues
+For know, the only "issue" we have is that github actions can't execute the PDFDocumentTest class. This is because github actions runs on a server that doesn't have a display server like [[https://wiki.archlinux.org/title/Xorg][Xorg]] installed, which is necessary for openning a pdf file.
+For fixing this, we've created another maven configuration file just for github actions. This file ignores the PDFDocumentTest class and tests all the other classes. This is a hack that we would like to fix, but we hadn't have more time.

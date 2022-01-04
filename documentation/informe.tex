@@ -1,0 +1,149 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage{graphicx} % needed for images
+\usepackage[export]{adjustbox} % needed for adjustable images
+\usepackage{flafter} % needed for figures
+\usepackage{hyperref} % needed for a clickable table of contents
+% \usepackage{cleveref}
+\usepackage{polyglossia} % needed for catalan support
+\usepackage{subfiles} % needed for a subfile structure
+\usepackage[table]{xcolor}
+\usepackage{fancyhdr} % needed for fancy header 
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage{dirtree}
+\usepackage{lineno}
+\usepackage{subfig}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,
+    urlcolor=blue,
+    }
+
+\setmainlanguage{catalan}
+\graphicspath{ {images/} }
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Enginyeria del Programari}
+\fancyhead[RE,LO]{Pràctica 4: Proves Unitàries}
+\fancyfoot[LE,RO]{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+% information
+\title{%
+    \begin{center}
+	\includegraphics[width=4cm,height=3cm]{udl.png}
+    \end{center}
+    \line(1,0){250}\\[0.3cm]
+    \textbf{Pràctica 4: Proves Unitàries}
+    \line(1,0){250}
+    \\[0.5cm]
+	\large Enginyeria del Programari - Grau en Enginyeria Informàtica
+}
+\author{Roger Fontova Torres \\ Pablo Fraile Alonso \\ Oscar Salcedo Heredia}
+\date{\today}
+
+% document
+\begin{document}
+    
+% title
+\maketitle
+\thispagestyle{empty}
+\newpage
+\tableofcontents
+% \listoffigures
+% \listoftables
+\newpage
+
+% begin contents
+
+\section{Introducció}
+\label{introduction}
+En aquesta pràctica s'ha plantejat la implementació d'una versió simplificada del cas d'ús  \textit{Obtenir Certificació} del Portal Unificat amb els respectius tests. \\
+
+\section{Presa de decissions de disseny}
+\label{decissisions}
+En aquest apartat s'explicaràn les decissions preses durant la implementació del projecte.
+
+\subsection{Utilització d'enumeracions}
+\label{enumeracions}
+Per tal d'encapsular la lògica de les diferents constants (com poden ser els diferents mètodes d'autentificació, certificat digital, l'estat en el que es troba l'usuari amb clave permanente, etc.) s'han decidit emprar \href{https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html}{enums (enumeracions)}.\\
+
+Aquesta decisió de disseny ha estat presa per evitar el code smell \href{https://refactoring.guru/smells/primitive-obsession}{\textit{Primitive Obsession}} a més d'evitar els \textit{magic numbers} \footnote{Són nombres que representen quelcom valor específic, i que es troben sense identificar al codi (és a dir, que no tenen cap constant assignada). Això a la llarga pot provocar que els programadors novells del projecte no entenguin el significat d'aquest nombre. Per més informació es pot llegir el \href{https://en.wikipedia.org/wiki/Magic_number_(programming)}{següent article}}. Les diferentes enumeracions han estat afegides dins d'un paquet anomenat \textit{enums}, ja que així es pot veure fàcilment on es troben totes les constants del projecte. A més, s'ha decidit fer classes de test per a les enumeracions, ja que així, estavem més segurs sobre l'ús dels mateixos.
+
+\newpage
+\subsection{Implementació dels tests per a la classe UnifiedPlatform}
+\label{interfaces}
+En un principi, l'estructura del testing era la següent:\\
+\dirtree{%
+.1 src/test/java/publicadministration.
+.2 interfaces.
+.3 UnifiedPlatformTest.java.
+.2 UnifiedPlatformClavePermanenteTest.java.
+.2 UnifiedPlatformClavePINTest.java.
+.2 UnifiedPlatformDigitalCertificateTest.java.
+}
+\vspace{0.5cm}
+El problema era que les classes ClavePermanente, ClavePIN i DigitalCertificate implementaven l'interfície UnifiedPlatformTest que incloïa:
+\begin{itemize}
+  \item Métodes default, que corresponien a métodes que s'havien de testejar a les tres classes.
+  \item Métodes sense implementació (sol la declaració) que havien d'implementar les tres classes.
+\end{itemize}
+
+Però vam veure que, els métodes sense implementació, únicament tenien relació entre una o dues classes que implementaven l'interfície\footnote{Per exemple, els métodes per a testejar enterPIN s'havien de testejar tant a la classe ClavePermanente com a la classe ClavePin.}. \\
+La solució per aquest problema va ser segregar els métodes sense implementació en diferents interfícies, el que feia que l'estructura de testing ens quedés de la següent forma:\\
+
+\dirtree{%
+.1 src/test/java/publicadministration.
+.2 interfaces.
+.3 UnifiedPlatformTest.java.
+.3 EnterNifPin.java.
+.3 EnterPin.java.
+.2 UnifiedPlatformClavePermanenteTest.java.
+.2 UnifiedPlatformClavePINTest.java.
+.2 UnifiedPlatformDigitalCertificateTest.java.
+}
+\vspace{0.5cm}
+Ara, qualsevol cas d'ús que necessiti testejar métodes relacionats amb entrar el pin a una autoritat de certificació, haurà d'implementar publicadministration per tal de poder obtenir testing dels métodes comuns, i a més haurà d'implementar EnterPin per tal de que Java obligui a implementar tots els casos que s'han pensat per l'operació EnterPin.\\
+
+Tot i que pugui semblar redundant crear les interfícies EnterNifPin i EnterPin, s'han afegit pensant en el futur, ja que si es volen implementar més Autoritats de Certificació segurament hagin d'utilitzar el métode enterNifPin i/o enterPin i, per tant, únicament haurien d'implementar l'interfície i aquesta els obligaria a implementar els métodes de test.
+
+\subsection{Test i implementació de QuotePeriodsCollection}
+\label{QuotePeriodsCollection}
+
+\subsubsection{Implementació}
+En el cas de QuotePeriodsCollection, com no se'ns força emprar una estructura de dades concreta (sinò que únicament se'ns donen les restriccions que ha de tenir el comportament de la classe) hem decidit optar per l'estructura de dades més òptima i minimalista per aquest cas.\\
+
+Finalment, ens vam decidir per \href{https://docs.oracle.com/javase/7/docs/api/java/util/TreeSet.html}{TreeSet}, una estructura de dades on cada inserció té un cost de $O(log(n))$, i pot guardar els elements ordenats a partir d'una instància de comparator. \\
+
+A més, a la documentació no se'ns diu quin tipus ha de retornar el métode \textit{getQuotes}, i per tant hem considerat retornar un dels tipus més genèrics de la jerarquía d'estructures de dades: Collection. Aquesta decisió ha estat presa ja que no volem mostrar quina estructura de dades estem emprant internament a la classe, ja que llavors els programadors que utiltzen QuotePeriodCollections estarien programant amb una implementació concreta i no amb una abstracció \footnote{En aquest cas es pot fer d'aquesta forma ja que l'únic que interessa a la persona que crida al métode getQuotes es rebre una colecció ordenada de elements, independentment que per devall sigui un arbre, una llista, etc.}.
+
+\subsubsection{Testing}
+El testing d'aquesta classe es podria haver fet molt més exhaustiu, però com únicament utilitzàvem la classe com un ``wrapper'' de TreeSet (que ja està testejada pels propis desenvolupadors del java jdk), s'han decidit testejar únicament els següents casos:
+\begin{itemize}
+  \item Si s'afegeix un element null.
+  \item Si s'afegeix un element duplicat (mateixa referència, mateixes dades).
+  \item Es conserva l'ordre dels elements si s'afegeixen en ordre \textbf{creixent}.
+  \item Es conserva l'ordre dels elements si s'afegeixen en ordre \textbf{decreixent}.
+  \item En cas de que no s'afegeixin elements, la co\lgem ecció es troba buida.
+\end{itemize}
+
+\subsection{Test coverage}
+S'han executat els test amb l'eïna test coverage, i s'ha observat que no tots tenen una puntuació del 100\%, això és pels següents motius:
+\begin{itemize}
+  \item No es testejen els métodes $toString()$, $equals(Object)$ i $hashCode()$ dels objectes, ja que majoritariament serveixen per debuggar.
+  \item Alguns getters no s'empren als tests, però en una versió ``final'' si que s'emprarien (per exemple getCreationDate() a la classe PDFDocument).
+\end{itemize}
+
+\section{Organització del projecte mitjançant git i github}
+Tal i com es va  \href{https://cv.udl.cat/portal/site/102018-2122/tool/03e89a2d-c918-41df-84c4-3b8af0591e37/discussionForum/message/dfViewThread}{mencionar al fòrum}, el nostre equip ha treballat mitjançant github com a servidor remot. A més, hem emprat eïnes més avançades de github, com són github actions i les issues del repositori. \\
+
+El link al repositori remot es pot trobar al \href{https://github.com/Pablito2020/Unified-Platform}{següent link de github}.
+
+\end{document}

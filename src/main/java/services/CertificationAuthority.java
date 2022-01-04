@@ -1,8 +1,6 @@
 package services;
 
-import data.Nif;
-import data.PINcode;
-import data.Password;
+import data.*;
 import exceptions.*;
 
 import java.net.ConnectException;
@@ -18,4 +16,7 @@ public interface CertificationAuthority {
     byte checkCredentials(Nif nif, Password password)
             throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException,
                     ConnectException;
+
+    EncryptedData sendCertfAuth(EncryptingKey pubKey)
+            throws NotValidCertificateException, ConnectException;
 }
