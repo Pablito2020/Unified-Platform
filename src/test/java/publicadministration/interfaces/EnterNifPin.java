@@ -14,5 +14,7 @@ public interface EnterNifPin {
 
     void enterNifPinBadMobile();
 
-    void correctNifPin() throws IncorrectValDateException, NifNotRegisteredException, AnyMobileRegisteredException, ConnectException;
+    void correctNifPin()
+            throws IncorrectValDateException, NifNotRegisteredException,
+                    AnyMobileRegisteredException, ConnectException;
 }

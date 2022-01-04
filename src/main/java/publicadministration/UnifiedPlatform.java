@@ -15,7 +15,8 @@ import java.util.Random;
 
 public class UnifiedPlatform {
 
-    private final EncryptingKey keys;
+    private EncryptingKey privateKey;
+    private EncryptingKey publicKey;
     private SS securitySocial;
     private CertificationAuthority certificationAuthority;
     private CertificationReport reportType;
@@ -25,10 +26,9 @@ public class UnifiedPlatform {
     private Citizen citizen;
 
     public UnifiedPlatform() {
-        this.keys =
-                new EncryptingKey(
-                        new BigInteger(BigInteger.TEN.bitCount(), new Random()),
-                        new BigInteger(BigInteger.TEN.bitCount(), new Random()));
+        this.privateKey =
+                new EncryptingKey(new BigInteger(BigInteger.TEN.bitCount(), new Random()));
+        this.publicKey = new EncryptingKey(new BigInteger(BigInteger.TEN.bitCount(), new Random()));
     }
 
     // Input events
@@ -67,38 +67,44 @@ public class UnifiedPlatform {
 
     public void enterNIFPINobt(Nif nif, Date valDate)
             throws NifNotRegisteredException, IncorrectValDateException,
-            AnyMobileRegisteredException, ConnectException {
-        if(this.certificationAuthority.sendPIN(nif, valDate))
+                    AnyMobileRegisteredException, ConnectException {
+        if (this.certificationAuthority.sendPIN(nif, valDate))
             System.out.println("PIN has been sent correctly");
     }
 
-    public void enterPIN(PINcode pin) throws NotValidPINException, NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException {
-        if(this.certificationAuthority.checkPIN(citizen.getDni().getNif(), pin))
+    public void enterPIN(PINcode pin)
+            throws NotValidPINException, NotAffiliatedException, ConnectException,
+                    BadFormatAccreditationNumberException {
+        if (this.certificationAuthority.checkPIN(citizen.getDni().getNif(), pin))
             System.out.println("PIN checked correctly");
         PDFDocument document = getReport();
         citizen.setDocument(document);
     }
 
-    private PDFDocument getReport() throws NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException {
+    private PDFDocument getReport()
+            throws NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException {
         switch (reportType) {
-            case LABORAL_LIFE_DOC -> {
+            case LABORAL_LIFE_DOC:
                 return securitySocial.getLaboralLife(citizen.getDni().getNif());
-            }
-            case MEMBER_ACCREDITATION_DOC -> {
+            case MEMBER_ACCREDITATION_DOC:
                 return securitySocial.getMembAccred(citizen.getDni().getNif());
-            }
-            default -> throw new IllegalArgumentException("Unsupported report");
+            default:
+                throw new IllegalArgumentException("Unsupported report");
         }
     }
 
     public void enterCred(Nif nif, Password password)
-            throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException, ConnectException, IncorrectValDateException, NotAffiliatedException, BadFormatAccreditationNumberException {
-        ClaveUserStatus claveOption = ClaveUserStatus.valueOf(this.certificationAuthority.checkCredentials(nif, password));
-        if (claveOption == ClaveUserStatus.REGISTERED_REINFORCED){
+            throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException,
+                    ConnectException, IncorrectValDateException, NotAffiliatedException,
+                    BadFormatAccreditationNumberException {
+        ClaveUserStatus claveOption =
+                ClaveUserStatus.valueOf(
+                        this.certificationAuthority.checkCredentials(nif, password));
+        if (claveOption == ClaveUserStatus.REGISTERED_REINFORCED) {
             this.certificationAuthority.sendPIN(nif, citizen.getDni().getValDate());
-        }else if(claveOption == ClaveUserStatus.NOT_REGISTERD){
+        } else if (claveOption == ClaveUserStatus.NOT_REGISTERD) {
             throw new NifNotRegisteredException();
-        }else if(claveOption == ClaveUserStatus.REGISTERED_NO_REINFORCED){
+        } else if (claveOption == ClaveUserStatus.REGISTERED_NO_REINFORCED) {
             citizen.setDocument(getReport());
         }
     }
@@ -152,12 +158,13 @@ public class UnifiedPlatform {
             throws NotValidPasswordException, NotValidCertificateException, ConnectException,
                     DecryptationException {
         if (!citizen.getPassword().equals(password)) throw new NotValidPasswordException();
-        EncryptedData result = certificationAuthority.sendCertfAuth(keys);
+        EncryptedData result = certificationAuthority.sendCertfAuth(publicKey);
         Nif resultNif = decryptIDdata(result);
+        System.out.println("received nif: " + resultNif.toString());
     }
 
     private Nif decryptIDdata(EncryptedData encryptData) throws DecryptationException {
-        return decryptor.decryptIDdata(encryptData, keys);
+        return decryptor.decryptIDdata(encryptData, privateKey);
     }
 
     public void setDecryptor(Decryptor decryptor) {
@@ -171,7 +178,8 @@ public class UnifiedPlatform {
     public void setSecuritySocial(SS securitySocial) {
         this.securitySocial = securitySocial;
     }
-public CertificationAuthority getCertificationAuthority() {
+
+    public CertificationAuthority getCertificationAuthority() {
         return certificationAuthority;
     }
 
@@ -201,5 +209,13 @@ public CertificationAuthority getCertificationAuthority() {
 
     public void setCitizen(Citizen citizen) {
         this.citizen = citizen;
+    }
+
+    public void setPublicKey(EncryptingKey key) {
+        this.publicKey = key;
+    }
+
+    public void setPrivateKey(EncryptingKey key) {
+        this.privateKey = key;
     }
 }
