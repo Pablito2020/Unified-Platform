@@ -170,12 +170,11 @@ public class UnifiedPlatformClavePermanenteTest implements UnifiedPlatformTest {
     }
 
     @Test
-    public void notRegisteredClavePermanente(){
+    public void notRegisteredClavePermanente() {
         citizen.setClaveUserStatus(ClaveUserStatus.NOT_REGISTERD);
         assertThrows(
                 NifNotRegisteredException.class,
-                () -> unifiedPlatform.enterCred(citizen.getDni().getNif(), citizen.getPassword())
-        );
+                () -> unifiedPlatform.enterCred(citizen.getDni().getNif(), citizen.getPassword()));
     }
 
     @Test

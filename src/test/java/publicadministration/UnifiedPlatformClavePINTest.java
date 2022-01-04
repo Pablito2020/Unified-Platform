@@ -2,7 +2,6 @@ package publicadministration;
 
 import data.*;
 import enums.CertificationReport;
-import enums.ClaveUserStatus;
 import exceptions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

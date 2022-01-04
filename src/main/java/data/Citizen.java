@@ -53,11 +53,11 @@ public class Citizen {
         this.password = password;
     }
 
-    public void setClaveUserStatus(ClaveUserStatus claveUserStatus){
+    public void setClaveUserStatus(ClaveUserStatus claveUserStatus) {
         this.claveUserStatus = claveUserStatus;
     }
 
-    public ClaveUserStatus getClaveUserStatus(){
+    public ClaveUserStatus getClaveUserStatus() {
         return this.claveUserStatus;
     }
 

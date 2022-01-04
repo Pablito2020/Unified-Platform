@@ -1,7 +1,6 @@
 package services;
 
 import data.*;
-import enums.ClaveUserStatus;
 import exceptions.*;
 
 import java.net.ConnectException;
