@@ -96,7 +96,9 @@ public interface UnifiedPlatformTest {
     @Test
     default void selectCertificationReportLaboralLife() {
         String expectedOutput =
-                "Authentication Method: CLAVE_PIN has byte value: 0Authentication Method: CLAVE_PERMANENTE has byte value: 1Authentication Method: CERTIFICADO_DIGITAL has byte value: 2\n";
+                "Authentication Method: CLAVE_PIN has byte value: 0Authentication Method:"
+                    + " CLAVE_PERMANENTE has byte value: 1Authentication Method:"
+                    + " CERTIFICADO_DIGITAL has byte value: 2\n";
         unifiedPlatform.selectCertificationReport(CertificationReport.LABORAL_LIFE_DOC.getByte());
         assertEquals(expectedOutput, outContent.toString());
     }
@@ -104,7 +106,9 @@ public interface UnifiedPlatformTest {
     @Test
     default void selectCertificationReportMembers() {
         String expectedOutput =
-                "Authentication Method: CLAVE_PIN has byte value: 0Authentication Method: CLAVE_PERMANENTE has byte value: 1Authentication Method: CERTIFICADO_DIGITAL has byte value: 2\n";
+                "Authentication Method: CLAVE_PIN has byte value: 0Authentication Method:"
+                    + " CLAVE_PERMANENTE has byte value: 1Authentication Method:"
+                    + " CERTIFICADO_DIGITAL has byte value: 2\n";
         unifiedPlatform.selectCertificationReport(CertificationReport.LABORAL_LIFE_DOC.getByte());
         assertEquals(expectedOutput, outContent.toString());
     }

@@ -25,8 +25,6 @@ public class DigitalCertificateTest {
 
     @Test
     public void invalidCertificateTest() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> DigitalCertificate.valueOf((byte) -1));
+        assertThrows(IllegalArgumentException.class, () -> DigitalCertificate.valueOf((byte) -1));
     }
 }

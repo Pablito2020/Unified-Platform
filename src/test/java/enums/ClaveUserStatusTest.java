@@ -18,15 +18,13 @@ public class ClaveUserStatusTest {
 
     @Test
     public void getNotRegistered() {
-        Assertions.assertEquals(
-                ClaveUserStatus.valueOf((byte) 0), ClaveUserStatus.NOT_REGISTERED);
+        Assertions.assertEquals(ClaveUserStatus.valueOf((byte) 0), ClaveUserStatus.NOT_REGISTERED);
     }
 
     @Test
     public void getRegisteredNotReinforced() {
         Assertions.assertEquals(
-                ClaveUserStatus.valueOf((byte) 1),
-                ClaveUserStatus.REGISTERED_NO_REINFORCED);
+                ClaveUserStatus.valueOf((byte) 1), ClaveUserStatus.REGISTERED_NO_REINFORCED);
     }
 
     @Test

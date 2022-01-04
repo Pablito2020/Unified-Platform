@@ -170,8 +170,8 @@ public class UnifiedPlatformClavePermanenteTest implements UnifiedPlatformTest, 
     @Test
     public void enterPinInvalidPin()
             throws NotValidCredException, NotAffiliatedException, IncorrectValDateException,
-            BadFormatAccreditationNumberException, NifNotRegisteredException,
-            AnyMobileRegisteredException, ConnectException {
+                    BadFormatAccreditationNumberException, NifNotRegisteredException,
+                    AnyMobileRegisteredException, ConnectException {
         citizen.setClaveUserStatus(ClaveUserStatus.REGISTERED_REINFORCED);
         unifiedPlatform.enterCred(citizen.getDni().getNif(), citizen.getPassword());
         assertThrows(
@@ -180,7 +180,6 @@ public class UnifiedPlatformClavePermanenteTest implements UnifiedPlatformTest, 
                     unifiedPlatform.enterPIN(new PINcode("125"));
                 });
     }
-
 
     @Test
     public void getLaboralLifeNotAffiliated() {

@@ -39,7 +39,7 @@ public class UnifiedPlatform {
 
     public void enterKeyWords(String keyWord) throws AnyKeyWordProcedureException {
         String service = searchKeyWords(keyWord);
-        System.out.println("Opening portal: "  + service);
+        System.out.println("Opening portal: " + service);
     }
 
     public void selectSS() {
