@@ -43,3 +43,29 @@ buildNumber.properties
 
 #Ignore attach pid
 .attach_*
+
+# Begin latex junk
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz
+documentation/informe.pdf

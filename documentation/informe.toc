@@ -1,3 +1,0 @@
-\selectlanguage *{catalan}
-\contentsline {section}{\numberline {1}Introducció}{3}{section.1}%
-\contentsline {section}{\numberline {2}}{3}{section.2}%
