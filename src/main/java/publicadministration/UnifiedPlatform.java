@@ -26,7 +26,8 @@ public class UnifiedPlatform {
     private Citizen citizen;
 
     public UnifiedPlatform() {
-        this.privateKey = new EncryptingKey(new BigInteger(BigInteger.TEN.bitCount(), new Random()));
+        this.privateKey =
+                new EncryptingKey(new BigInteger(BigInteger.TEN.bitCount(), new Random()));
         this.publicKey = new EncryptingKey(new BigInteger(BigInteger.TEN.bitCount(), new Random()));
     }
 
@@ -66,32 +67,35 @@ public class UnifiedPlatform {
 
     public void enterNIFPINobt(Nif nif, Date valDate)
             throws NifNotRegisteredException, IncorrectValDateException,
-            AnyMobileRegisteredException, ConnectException {
-        if(this.certificationAuthority.sendPIN(nif, valDate))
+                    AnyMobileRegisteredException, ConnectException {
+        if (this.certificationAuthority.sendPIN(nif, valDate))
             System.out.println("PIN has been sent correctly");
     }
 
-    public void enterPIN(PINcode pin) throws NotValidPINException, NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException {
-        if(this.certificationAuthority.checkPIN(citizen.getDni().getNif(), pin))
+    public void enterPIN(PINcode pin)
+            throws NotValidPINException, NotAffiliatedException, ConnectException,
+                    BadFormatAccreditationNumberException {
+        if (this.certificationAuthority.checkPIN(citizen.getDni().getNif(), pin))
             System.out.println("PIN checked correctly");
         PDFDocument document = getReport();
         citizen.setDocument(document);
     }
 
-    private PDFDocument getReport() throws NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException {
+    private PDFDocument getReport()
+            throws NotAffiliatedException, ConnectException, BadFormatAccreditationNumberException {
         switch (reportType) {
-            case LABORAL_LIFE_DOC -> {
+            case LABORAL_LIFE_DOC:
                 return securitySocial.getLaboralLife(citizen.getDni().getNif());
-            }
-            case MEMBER_ACCREDITATION_DOC -> {
+            case MEMBER_ACCREDITATION_DOC:
                 return securitySocial.getMembAccred(citizen.getDni().getNif());
-            }
-            default -> throw new IllegalArgumentException("Unsupported report");
+            default:
+                throw new IllegalArgumentException("Unsupported report");
         }
     }
 
     public void enterCred(Nif nif, Password password)
-            throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException, ConnectException, IncorrectValDateException {
+            throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException,
+                    ConnectException, IncorrectValDateException {
         ClaveUserStatus claveOption =
                 ClaveUserStatus.valueOf(
                         this.certificationAuthority.checkCredentials(nif, password));
@@ -146,7 +150,7 @@ public class UnifiedPlatform {
 
     public void enterPassword(Password password)
             throws NotValidPasswordException, NotValidCertificateException, ConnectException,
-            DecryptationException {
+                    DecryptationException {
         if (!citizen.getPassword().equals(password)) throw new NotValidPasswordException();
         EncryptedData result = certificationAuthority.sendCertfAuth(publicKey);
         Nif resultNif = decryptIDdata(result);
@@ -168,7 +172,8 @@ public class UnifiedPlatform {
     public void setSecuritySocial(SS securitySocial) {
         this.securitySocial = securitySocial;
     }
-public CertificationAuthority getCertificationAuthority() {
+
+    public CertificationAuthority getCertificationAuthority() {
         return certificationAuthority;
     }
 
