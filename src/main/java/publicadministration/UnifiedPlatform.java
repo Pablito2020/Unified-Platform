@@ -15,7 +15,8 @@ import java.util.Random;
 
 public class UnifiedPlatform {
 
-    private final EncryptingKey keys;
+    private EncryptingKey privateKey;
+    private EncryptingKey publicKey;
     private SS securitySocial;
     private CertificationAuthority certificationAuthority;
     private CertificationReport reportType;
@@ -25,10 +26,8 @@ public class UnifiedPlatform {
     private Citizen citizen;
 
     public UnifiedPlatform() {
-        this.keys =
-                new EncryptingKey(
-                        new BigInteger(BigInteger.TEN.bitCount(), new Random()),
-                        new BigInteger(BigInteger.TEN.bitCount(), new Random()));
+        this.privateKey = new EncryptingKey(new BigInteger(BigInteger.TEN.bitCount(), new Random()));
+        this.publicKey = new EncryptingKey(new BigInteger(BigInteger.TEN.bitCount(), new Random()));
     }
 
     // Input events
@@ -147,14 +146,15 @@ public class UnifiedPlatform {
 
     public void enterPassword(Password password)
             throws NotValidPasswordException, NotValidCertificateException, ConnectException,
-                    DecryptationException {
+            DecryptationException {
         if (!citizen.getPassword().equals(password)) throw new NotValidPasswordException();
-        EncryptedData result = certificationAuthority.sendCertfAuth(keys);
+        EncryptedData result = certificationAuthority.sendCertfAuth(publicKey);
         Nif resultNif = decryptIDdata(result);
+        System.out.println("received nif: " + resultNif.toString());
     }
 
     private Nif decryptIDdata(EncryptedData encryptData) throws DecryptationException {
-        return decryptor.decryptIDdata(encryptData, keys);
+        return decryptor.decryptIDdata(encryptData, privateKey);
     }
 
     public void setDecryptor(Decryptor decryptor) {
@@ -198,5 +198,13 @@ public CertificationAuthority getCertificationAuthority() {
 
     public void setCitizen(Citizen citizen) {
         this.citizen = citizen;
+    }
+
+    public void setPublicKey(EncryptingKey key) {
+        this.publicKey = key;
+    }
+
+    public void setPrivateKey(EncryptingKey key) {
+        this.privateKey = key;
     }
 }

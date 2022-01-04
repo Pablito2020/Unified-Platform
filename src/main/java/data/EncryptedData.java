@@ -7,4 +7,8 @@ public final class EncryptedData {
     public EncryptedData(byte[] data) {
         this.data = data;
     }
+
+    public byte[] getData() {
+        return data;
+    }
 }
