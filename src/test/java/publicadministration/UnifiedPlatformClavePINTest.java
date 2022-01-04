@@ -1,6 +1,7 @@
 package publicadministration;
 
 import data.*;
+import enums.AuthenticationMethod;
 import enums.CertificationReport;
 import exceptions.*;
 import org.junit.jupiter.api.AfterEach;
@@ -194,5 +195,13 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest, EnterNi
                 () -> {
                     unifiedPlatform.enterPIN(correctPin);
                 });
+    }
+
+    @Override
+    @Test
+    public void selectAuthenticationMethod() {
+        unifiedPlatform.selectAuthMethod(AuthenticationMethod.CLAVE_PIN.getByte());
+        assertEquals(AuthenticationMethod.CLAVE_PIN, unifiedPlatform.getAuthMethod());
+        assertEquals("Showing authentication form\n", outContent.toString());
     }
 }

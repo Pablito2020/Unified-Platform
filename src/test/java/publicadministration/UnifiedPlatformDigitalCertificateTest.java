@@ -1,6 +1,8 @@
 package publicadministration;
 
 import data.*;
+import enums.AuthenticationMethod;
+import enums.DigitalCertificate;
 import exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -136,7 +138,7 @@ public class UnifiedPlatformDigitalCertificateTest implements UnifiedPlatformTes
     }
 
     @Test
-    public void invalidDecrypt() {
+    public void invalidPrivateKey() {
         unifiedPlatform.setPrivateKey(new EncryptingKey((new BigInteger("11"))));
         assertThrows(
                 DecryptationException.class,
@@ -151,5 +153,21 @@ public class UnifiedPlatformDigitalCertificateTest implements UnifiedPlatformTes
                     NotValidCertificateException, DecryptationException, ConnectException {
         unifiedPlatform.enterPassword(new Password("correctPassword"));
         assertEquals("received nif: Nif{nif ciudadano='29292929L'}\n", outContent.toString());
+    }
+
+    @Test
+    public void getDigitalCertificate() {
+        unifiedPlatform.selectCertificate((byte) 0);
+        assertEquals(unifiedPlatform.getDigitalCertificate(), DigitalCertificate.DNI_E);
+        unifiedPlatform.selectCertificate((byte) 1);
+        assertEquals(unifiedPlatform.getDigitalCertificate(), DigitalCertificate.FNMT);
+    }
+
+    @Override
+    @Test
+    public void selectAuthenticationMethod() {
+        unifiedPlatform.selectAuthMethod(AuthenticationMethod.CERTIFICADO_DIGITAL.getByte());
+        assertEquals(AuthenticationMethod.CERTIFICADO_DIGITAL, unifiedPlatform.getAuthMethod());
+        assertEquals("Showing authentication form\n", outContent.toString());
     }
 }

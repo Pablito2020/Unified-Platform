@@ -38,8 +38,8 @@ public class UnifiedPlatform {
     }
 
     public void enterKeyWords(String keyWord) throws AnyKeyWordProcedureException {
-        String action = searchKeyWords(keyWord);
-        System.out.println(action);
+        String service = searchKeyWords(keyWord);
+        System.out.println("Opening portal: "  + service);
     }
 
     public void selectSS() {
@@ -102,7 +102,7 @@ public class UnifiedPlatform {
                         this.certificationAuthority.checkCredentials(nif, password));
         if (claveOption == ClaveUserStatus.REGISTERED_REINFORCED) {
             this.certificationAuthority.sendPIN(nif, citizen.getDni().getValDate());
-        } else if (claveOption == ClaveUserStatus.NOT_REGISTERD) {
+        } else if (claveOption == ClaveUserStatus.NOT_REGISTERED) {
             throw new NifNotRegisteredException();
         } else if (claveOption == ClaveUserStatus.REGISTERED_NO_REINFORCED) {
             citizen.setDocument(getReport());
@@ -110,15 +110,15 @@ public class UnifiedPlatform {
     }
 
     private void printDocument() throws BadPathException, PrintingException {
-        throw new UnsupportedOperationException("No implemented");
+        printDocument(citizen.getDocument().getPath());
     }
 
-    private void downloadDocument() {
-        throw new UnsupportedOperationException("No implemented");
+    private void downloadDocument() throws BadPathException {
+        downloadDocument(citizen.getDocument().getPath());
     }
 
-    private void selectPath(DocPath path) throws BadPathException {
-        throw new UnsupportedOperationException("No implemented");
+    private void selectPath(DocPath path) throws BadPathException, IOException {
+        citizen.getDocument().moveDoc(path);
     }
 
     // Other operations
@@ -139,13 +139,11 @@ public class UnifiedPlatform {
     }
 
     private void printDocument(DocPath path) throws BadPathException, PrintingException {
-        System.out.println("Printing document");
-        throw new UnsupportedOperationException("No implemented");
+        System.out.println("Printing document on path: " + path.getPath());
     }
 
     private void downloadDocument(DocPath path) throws BadPathException {
-        System.out.println("Downloading Document");
-        throw new UnsupportedOperationException("No implemented");
+        System.out.println("Downloading Document on path: " + citizen.getDocument().getPath());
     }
 
     // Optional operations
@@ -171,40 +169,24 @@ public class UnifiedPlatform {
         this.decryptor = decryptor;
     }
 
-    public SS getSecuritySocial() {
-        return securitySocial;
-    }
-
     public void setSecuritySocial(SS securitySocial) {
         this.securitySocial = securitySocial;
-    }
-
-    public CertificationAuthority getCertificationAuthority() {
-        return certificationAuthority;
     }
 
     public void setCertificationAuthority(CertificationAuthority certificationAuthority) {
         this.certificationAuthority = certificationAuthority;
     }
 
-    public CertificationReport getReportType() {
-        return reportType;
-    }
-
     public void setReportType(CertificationReport reportType) {
         this.reportType = reportType;
     }
 
+    public DigitalCertificate getDigitalCertificate() {
+        return digitalCertificate;
+    }
+
     public AuthenticationMethod getAuthMethod() {
         return authMethod;
-    }
-
-    public void setAuthMethod(AuthenticationMethod authMethod) {
-        this.authMethod = authMethod;
-    }
-
-    public Citizen getCitizen() {
-        return citizen;
     }
 
     public void setCitizen(Citizen citizen) {

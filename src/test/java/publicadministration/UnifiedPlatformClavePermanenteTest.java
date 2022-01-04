@@ -1,11 +1,13 @@
 package publicadministration;
 
 import data.*;
+import enums.AuthenticationMethod;
 import enums.CertificationReport;
 import enums.ClaveUserStatus;
 import exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import publicadministration.interfaces.EnterPin;
 import publicadministration.interfaces.UnifiedPlatformTest;
 import services.CertificationAuthority;
 import services.SS;
@@ -16,7 +18,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class UnifiedPlatformClavePermanenteTest implements UnifiedPlatformTest {
+public class UnifiedPlatformClavePermanenteTest implements UnifiedPlatformTest, EnterPin {
     SS ss;
     CertificationAuthority certificationAuthority;
     Citizen citizen;
@@ -156,10 +158,20 @@ public class UnifiedPlatformClavePermanenteTest implements UnifiedPlatformTest {
     }
 
     @Test
-    public void registeredReinforcedInvalidPin()
-            throws NotValidCredException, IncorrectValDateException, NifNotRegisteredException,
-                    AnyMobileRegisteredException, ConnectException, NotAffiliatedException,
-                    BadFormatAccreditationNumberException {
+    public void notRegisteredClavePermanente() {
+        citizen.setClaveUserStatus(ClaveUserStatus.NOT_REGISTERED);
+        assertThrows(
+                NifNotRegisteredException.class,
+                () -> unifiedPlatform.enterCred(citizen.getDni().getNif(), citizen.getPassword()));
+    }
+
+    // Enter Pin method
+
+    @Test
+    public void enterPinInvalidPin()
+            throws NotValidCredException, NotAffiliatedException, IncorrectValDateException,
+            BadFormatAccreditationNumberException, NifNotRegisteredException,
+            AnyMobileRegisteredException, ConnectException {
         citizen.setClaveUserStatus(ClaveUserStatus.REGISTERED_REINFORCED);
         unifiedPlatform.enterCred(citizen.getDni().getNif(), citizen.getPassword());
         assertThrows(
@@ -169,13 +181,6 @@ public class UnifiedPlatformClavePermanenteTest implements UnifiedPlatformTest {
                 });
     }
 
-    @Test
-    public void notRegisteredClavePermanente() {
-        citizen.setClaveUserStatus(ClaveUserStatus.NOT_REGISTERD);
-        assertThrows(
-                NifNotRegisteredException.class,
-                () -> unifiedPlatform.enterCred(citizen.getDni().getNif(), citizen.getPassword()));
-    }
 
     @Test
     public void getLaboralLifeNotAffiliated() {
@@ -195,5 +200,13 @@ public class UnifiedPlatformClavePermanenteTest implements UnifiedPlatformTest {
         assertThrows(
                 NotAffiliatedException.class,
                 () -> unifiedPlatform.enterCred(citizen.getDni().getNif(), citizen.getPassword()));
+    }
+
+    @Override
+    @Test
+    public void selectAuthenticationMethod() {
+        unifiedPlatform.selectAuthMethod(AuthenticationMethod.CLAVE_PERMANENTE.getByte());
+        assertEquals(AuthenticationMethod.CLAVE_PERMANENTE, unifiedPlatform.getAuthMethod());
+        assertEquals("Showing authentication form\n", outContent.toString());
     }
 }
