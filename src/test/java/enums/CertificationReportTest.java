@@ -28,8 +28,6 @@ public class CertificationReportTest {
 
     @Test
     public void invalidCertification() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> CertificationReport.valueOf((byte) -1));
+        assertThrows(IllegalArgumentException.class, () -> CertificationReport.valueOf((byte) -1));
     }
 }

@@ -1,6 +1,5 @@
 package enums;
 
-import exceptions.NotAffiliatedException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,8 +34,6 @@ public class AuthenticationMethodTest {
 
     @Test
     public void invalidAuthentication() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> AuthenticationMethod.valueOf((byte) -1));
+        assertThrows(IllegalArgumentException.class, () -> AuthenticationMethod.valueOf((byte) -1));
     }
 }
