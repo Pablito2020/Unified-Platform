@@ -59,18 +59,15 @@
 \label{introduction}
 En aquesta pràctica s'ha plantejat la implementació d'una versió simplificada del cas d'ús  \textit{Obtenir Certificació} del Portal Unificat amb els respectius tests. \\
 
-Les classes funcionals s'han dividit en cinc \textit{packages}: \textit{data}, \textit{enums}, \textit{exceptions}, \textit{publicadministration}, \textit{services}. \\
-
-Les classes de testing s'han dividit en tres \textit{packages} diferents: \textit{data}, \textit{enums} i \textit{publicadministration}.
-
-
 \section{Presa de decissions de disseny}
 \label{decissisions}
-En aquest apartat s'explicaràn les decissions preses durant la implementació del projecte, és a dir, la utilització d'enumeracions i interfícies.
+En aquest apartat s'explicaràn les decissions preses durant la implementació del projecte.
 
 \subsection{Utilització d'enumeracions}
 \label{enumeracions}
-S'han utilitzat enumeracions per tenir en una classe les diferents opcions dels mètodes d'autenticació, del certificat digital, de l'estat de la Cl@ve Permanente, etc.
+Per tal d'encapsular la lògica de les diferents constants, com poden ser els diferents mètodes d'autentificació, certificat digital, l'estat en el que es troba l'usuari amb clave permanente, etc. S'han decidit emprar \href{https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html}{enums(enumeracions)}.\\
+
+Aquesta decisió de disseny ha estat presa per evitar el code smell \href{https://refactoring.guru/smells/primitive-obsession}{\textit{Primitive Obsession}} a més d'evitar els \textit{magic numbers} \footnote{Són nombres que els programadors \textit{hardcodegen} al codi i que, a la llarga, fa que no s'entengui el significat d'aquell nombre. Per més informació es pot llegir el \href{https://en.wikipedia.org/wiki/Magic_number_(programming)}{següent article}}. Les diferentes enumeracions han estat afegides dins d'un paquet anomenat \textit{enums}, ja que així es pot veure fàcilment on es troben totes les constants del projecte.
 
 \subsection{Utilització d'interfícies}
 \label{interfaces}
