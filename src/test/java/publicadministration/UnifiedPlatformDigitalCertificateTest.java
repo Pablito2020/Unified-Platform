@@ -146,9 +146,10 @@ public class UnifiedPlatformDigitalCertificateTest implements UnifiedPlatformTes
     }
 
     @Test
-    public void validDecrypt() throws BadFormatPasswordException, NotValidPasswordException, NotValidCertificateException, DecryptationException, ConnectException {
+    public void validDecrypt()
+            throws BadFormatPasswordException, NotValidPasswordException,
+                    NotValidCertificateException, DecryptationException, ConnectException {
         unifiedPlatform.enterPassword(new Password("correctPassword"));
         assertEquals("received nif: Nif{nif ciudadano='29292929L'}\n", outContent.toString());
     }
-
 }

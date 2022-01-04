@@ -148,8 +148,8 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest, EnterNi
 
     @Test
     public void correctNifPin()
-            throws
-            ConnectException, IncorrectValDateException, NifNotRegisteredException, AnyMobileRegisteredException {
+            throws ConnectException, IncorrectValDateException, NifNotRegisteredException,
+                    AnyMobileRegisteredException {
         unifiedPlatform.enterNIFPINobt(citizen.getDni().getNif(), citizen.getDni().getValDate());
         assertEquals("PIN has been sent correctly\n", outContent.toString());
     }

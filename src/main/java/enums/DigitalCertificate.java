@@ -28,7 +28,6 @@ public enum DigitalCertificate {
 
     @Override
     public String toString() {
-        return "DigitalCertificate " +
-                + value + " ";
+        return "DigitalCertificate " + +value + " ";
     }
 }
