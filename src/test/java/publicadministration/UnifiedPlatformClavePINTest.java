@@ -89,7 +89,7 @@ public class UnifiedPlatformClavePINTest implements UnifiedPlatformTest, EnterNi
                     }
 
                     @Override
-                    public ClaveUserStatus checkCredentials(Nif nif, Password password) {
+                    public byte checkCredentials(Nif nif, Password password) {
                         throw new UnsupportedOperationException("Not supported by clave pin");
                     }
 

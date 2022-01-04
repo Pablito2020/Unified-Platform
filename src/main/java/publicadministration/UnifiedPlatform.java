@@ -93,7 +93,7 @@ public class UnifiedPlatform {
 
     public void enterCred(Nif nif, Password password)
             throws NifNotRegisteredException, NotValidCredException, AnyMobileRegisteredException, ConnectException, IncorrectValDateException, NotAffiliatedException, BadFormatAccreditationNumberException {
-        ClaveUserStatus claveOption = this.certificationAuthority.checkCredentials(nif, password);
+        ClaveUserStatus claveOption = ClaveUserStatus.valueOf(this.certificationAuthority.checkCredentials(nif, password));
         if (claveOption == ClaveUserStatus.REGISTERED_REINFORCED){
             this.certificationAuthority.sendPIN(nif, citizen.getDni().getValDate());
         }else if(claveOption == ClaveUserStatus.NOT_REGISTERD){

@@ -79,7 +79,7 @@ public class UnifiedPlatformClavePermanenteTest implements UnifiedPlatformTest {
                     }
 
                     @Override
-                    public ClaveUserStatus checkCredentials(Nif nif, Password password)
+                    public byte checkCredentials(Nif nif, Password password)
                             throws NotValidCredException, NifNotRegisteredException,
                                     AnyMobileRegisteredException {
                         if (!citizen.getPassword().equals(password))
@@ -89,7 +89,7 @@ public class UnifiedPlatformClavePermanenteTest implements UnifiedPlatformTest {
                         if (citizen.getTelephoneNumber() == null)
                             throw new AnyMobileRegisteredException();
                         System.out.println("Credentials are OK!");
-                        return citizen.getClaveUserStatus();
+                        return citizen.getClaveUserStatus().getByte();
                     }
 
                     @Override

@@ -27,6 +27,10 @@ public enum ClaveUserStatus {
         throw new IllegalArgumentException(value + " isn't a ClaveUserStatus");
     }
 
+    public byte getByte() {
+        return value;
+    }
+
     @Override
     public String toString() {
         return "Clave User Status: " + name() + " has byte value: " + value;
